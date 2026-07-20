@@ -140,7 +140,7 @@ export default function ComicReader() {
       </motion.div>
 
       {/* Main panel / full strip area */}
-      <div className="w-full max-w-sm">
+      <div className={`w-full ${showFullStrip ? 'max-w-4xl' : 'max-w-sm'}`}>
         <AnimatePresence mode="wait" custom={direction}>
           {showFullStrip ? (
             <motion.div
