@@ -45,12 +45,21 @@ export default function OceanMoodCompass({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-[500px] relative">
+    <div className="flex flex-col gap-6 w-full items-center">
       
-      {/* Question Text */}
-      <h2 className="absolute top-0 text-xl md:text-2xl font-bold text-slate-800 text-center z-20 px-4" style={{ fontFamily: 'Nunito, sans-serif' }}>
-        {questionText}
-      </h2>
+      {/* Question Stem */}
+      <motion.div
+        className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 w-full"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <p className="text-sm font-bold leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
+          {questionText}
+        </p>
+      </motion.div>
+
+      {/* Compass Area */}
+      <div className="flex flex-col items-center justify-center w-full h-[450px] relative">
 
       {/* Center Label */}
       <motion.div
@@ -97,8 +106,6 @@ export default function OceanMoodCompass({
           );
         })}
       </div>
-
-      {/* Confirm Button */}
       <AnimatePresence>
         {stagedOption && !answered && (
           <motion.button
@@ -118,7 +125,7 @@ export default function OceanMoodCompass({
           </motion.button>
         )}
       </AnimatePresence>
-
+      </div>
     </div>
   );
 }

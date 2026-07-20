@@ -44,15 +44,16 @@ export default function TreasureDecoder({
   return (
     <div className="flex flex-col gap-6 w-full items-center">
       
-      {/* Instructions */}
-      <motion.p
-        className="text-center text-sm font-medium text-slate-500 max-w-md"
-        style={{ fontFamily: 'Nunito, sans-serif' }}
-        initial={{ opacity: 0, y: -10 }}
+      {/* Question Stem */}
+      <motion.div
+        className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 w-full"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        Old sea creatures sometimes use unusual expressions. Let's unlock the meaning of this one!
-      </motion.p>
+        <p className="text-sm font-bold leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
+          {questionText}
+        </p>
+      </motion.div>
 
       {/* The Treasure Chest */}
       <motion.div
