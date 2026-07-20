@@ -2,6 +2,7 @@ export interface QuestionOption {
   id: string;
   text: string;
   emoji?: string;
+  image?: string;
   isCorrect: boolean;
   feeling?: string;
 }
@@ -22,6 +23,11 @@ export interface Question {
   options: QuestionOption[];
   turtleTip?: string;
 }
+
+import neutralImg from '../assets/1_neutral.png';
+import excitedImg from '../assets/2_excited.png';
+import angryImg from '../assets/3_angry.png';
+import upsetImg from '../assets/4_upset.png';
 
 export const questions: Question[] = [
   {
@@ -59,10 +65,10 @@ export const questions: Question[] = [
     explanation: "Since it is a golf putter, it is not a present for her. So, she would be neutral instead of angry or excited.",
     turtleTip: "If she knew it was his putter all along, she wouldn't expect a present!",
     options: [
-      { id: 'A', emoji: '🙂', text: '"Oh... it\'s your new putter."', feeling: 'Neutral', isCorrect: true },
-      { id: 'B', emoji: '😍', text: '"Wow! A birthday present for me!"', feeling: 'Excited', isCorrect: false },
-      { id: 'C', emoji: '😡', text: '"You forgot my birthday!"', feeling: 'Angry', isCorrect: false },
-      { id: 'D', emoji: '😭', text: '"You hid something from me!"', feeling: 'Upset', isCorrect: false },
+      { id: 'A', image: neutralImg, text: '"Oh... it\'s your new putter."', feeling: 'Neutral', isCorrect: true },
+      { id: 'B', image: excitedImg, text: '"Wow! A birthday present for me!"', feeling: 'Excited', isCorrect: false },
+      { id: 'C', image: angryImg, text: '"You forgot my birthday!"', feeling: 'Angry', isCorrect: false },
+      { id: 'D', image: upsetImg, text: '"You hid something from me!"', feeling: 'Upset', isCorrect: false },
     ],
   },
   {

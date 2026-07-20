@@ -128,15 +128,25 @@ export default function ReactionCards({ options, questionText, contextText, onAn
             aria-label={`Option ${option.id}: ${option.emoji} ${option.feeling} — ${option.text}`}
             aria-pressed={selectedId === option.id}
           >
-            {/* Emoji face */}
-            <motion.div
-              className="text-4xl mb-1"
-              animate={answered && option.isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
-              transition={{ duration: 0.5 }}
-              aria-hidden="true"
-            >
-              {option.emoji}
-            </motion.div>
+            {/* Reaction Image or Emoji */}
+            {option.image ? (
+              <motion.img
+                src={option.image}
+                alt={option.feeling}
+                className="w-16 h-16 object-contain mb-2 mx-auto"
+                animate={answered && option.isCorrect ? { scale: [1, 1.15, 1], rotate: [0, 5, -5, 0] } : {}}
+                transition={{ duration: 0.5 }}
+              />
+            ) : (
+              <motion.div
+                className="text-4xl mb-1"
+                animate={answered && option.isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
+                transition={{ duration: 0.5 }}
+                aria-hidden="true"
+              >
+                {option.emoji}
+              </motion.div>
+            )}
             <div
               className="text-xs font-bold mb-1"
               style={{ color: '#1e3a5f', fontFamily: 'Fredoka One, cursive' }}
