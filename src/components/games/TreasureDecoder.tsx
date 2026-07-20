@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { QuestionOption } from '../../data/questions';
 
 interface TreasureDecoderProps {
@@ -62,41 +62,38 @@ export default function TreasureDecoder({
               color: '#1e3a5f',
             }}
             initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 + i * 0.1 }}
+            animate={{
+              opacity: answered && !option.isCorrect && selectedId !== option.id ? 0.4 : 1,
+              y: 0,
+            }}
+            transition={{ delay: i * 0.05, duration: 0.3 }}
             onMouseEnter={() => !answered && setHoveredId(option.id)}
             onMouseLeave={() => !answered && setHoveredId(null)}
             onClick={() => handleSelect(option)}
-            whileHover={!answered ? { scale: 1.01 } : {}}
+            whileHover={!answered ? { backgroundColor: '#f8fafc' } : {}}
             whileTap={!answered ? { scale: 0.99 } : {}}
             disabled={answered}
+            aria-label={`Option ${option.id}: ${option.text}`}
             aria-pressed={selectedId === option.id}
           >
-            {/* Status indicator on the left side when answered */}
-            <AnimatePresence>
-              {answered && option.isCorrect && (
-                <motion.span
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-green-600 font-bold"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                >
-                  ✓
-                </motion.span>
-              )}
-              {answered && selectedId === option.id && !option.isCorrect && (
-                <motion.span
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-red-500 font-bold"
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                >
-                  ✗
-                </motion.span>
-              )}
-            </AnimatePresence>
-
-            <span className={answered && (option.isCorrect || selectedId === option.id) ? "ml-6 transition-all" : "transition-all"}>
-              {option.text}
-            </span>
+            <div className="flex items-center gap-3">
+              {/* Bubble indicator */}
+              <motion.div
+                className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0"
+                style={{
+                  background: answered && option.isCorrect
+                    ? '#22c55e'
+                    : answered && selectedId === option.id
+                    ? '#ef4444'
+                    : '#f1f5f9',
+                  color: answered && (option.isCorrect || selectedId === option.id) ? 'white' : '#64748b',
+                  fontFamily: 'Fredoka One, cursive',
+                }}
+              >
+                {answered && option.isCorrect ? '✓' : answered && selectedId === option.id ? '✗' : option.id}
+              </motion.div>
+              <span>{option.text}</span>
+            </div>
           </motion.button>
         ))}
       </div>

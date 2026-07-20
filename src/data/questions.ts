@@ -78,7 +78,7 @@ export const questions: Question[] = [
     pearlGradient: 'linear-gradient(135deg, #c4b5fd, #8b5cf6, #6d28d9)',
     skill: 'Using context clues to infer meanings',
     gameType: 'treasure-decoder',
-    questionText: 'Which sentence most closely matches the meaning of "fit to be tied"?',
+    questionText: "Which sentence most closely matches the meaning of 'fit to be tied'?",
     correctFeedback: "Brilliant! You cracked the code! 'Fit to be tied' means being extremely angry, just like Arjun! 🐚✨",
     wrongFeedback: "Not quite! 'Fit to be tied' means being extremely furious or angry. Which sentence shows the most anger? 🐚",
     explanation: "\"Fit to be tied\" means being extremely angry or furious. Throwing a bag onto a sofa after a terrible day is a strong reaction that best shows this extreme anger.",
