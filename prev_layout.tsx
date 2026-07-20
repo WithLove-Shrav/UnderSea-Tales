@@ -8,8 +8,6 @@ import SpeechBubbleChoice from '../games/SpeechBubbleChoice';
 import ReactionCards from '../games/ReactionCards';
 import TreasureChestSort from '../games/TreasureChestSort';
 import EmotionShellGame from '../games/EmotionShellGame';
-import TreasureDecoder from '../games/TreasureDecoder';
-import OceanMoodCompass from '../games/OceanMoodCompass';
 import comicStrip from '../../assets/comic-strip.png';
 
 // ─── Comic Zoom Modal ────────────────────────────────────────────────────────
@@ -334,23 +332,6 @@ export default function QuestionLayout() {
                   onAnswer={handleAnswer}
                   answered={answered}
                   selectedId={selectedId}
-                />
-              )}
-              {question.gameType === 'treasure-decoder' && (
-                <TreasureDecoder
-                  options={question.options}
-                  questionText={question.questionText}
-                  contextText={question.contextText}
-                  onAnswer={handleAnswer}
-                  answered={answered}
-                  selectedId={selectedId}
-                />
-              )}
-              {question.gameType === 'mood-compass' && (
-                <OceanMoodCompass
-                  options={question.options}
-                  onAnswer={handleAnswer}
-                  answered={answered}
                 />
               )}
             </motion.div>
