@@ -81,7 +81,7 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="relative bg-white/95 backdrop-blur-lg rounded-3xl px-12 py-8 shadow-xl max-w-lg text-center mx-4"
+              className="relative bg-white/95 backdrop-blur-lg rounded-[3rem] px-10 md:px-24 py-8 md:py-12 shadow-xl w-[95%] max-w-3xl text-center mx-auto"
               style={{ border: '1px solid rgba(255,255,255,0.8)' }}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
