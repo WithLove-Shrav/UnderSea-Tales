@@ -184,10 +184,11 @@ export default function ComicReader() {
       )}
 
       {/* Navigation buttons */}
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-6 items-center mt-6 mb-4">
         <motion.button
-          className="px-6 py-3 rounded-full font-bold text-base cursor-pointer"
+          className="rounded-full font-bold text-base cursor-pointer"
           style={{
+            padding: '0.8rem 2.5rem',
             fontFamily: 'Fredoka One, cursive',
             background: isFirst && !showFullStrip ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.9)',
             color: '#1e3a5f',
@@ -205,8 +206,9 @@ export default function ComicReader() {
 
         {showFullStrip ? (
           <motion.button
-            className="px-8 py-4 rounded-full font-bold text-lg shadow-2xl cursor-pointer"
+            className="rounded-full font-bold text-lg shadow-2xl cursor-pointer"
             style={{
+              padding: '1rem 3rem',
               fontFamily: 'Fredoka One, cursive',
               background: 'linear-gradient(135deg, #f59e0b, #d97706)',
               color: 'white',
@@ -222,8 +224,9 @@ export default function ComicReader() {
           </motion.button>
         ) : (
           <motion.button
-            className="px-6 py-3 rounded-full font-bold text-base cursor-pointer"
+            className="rounded-full font-bold text-base cursor-pointer"
             style={{
+              padding: '0.8rem 2.5rem',
               fontFamily: 'Fredoka One, cursive',
               background: isLast ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(255,255,255,0.9)',
               color: isLast ? 'white' : '#1e3a5f',

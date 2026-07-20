@@ -174,8 +174,8 @@ function CharacterIntro({ onStart }: { onStart: () => void }) {
       </motion.div>
 
       <motion.div
-        className="bg-white/95 backdrop-blur-md rounded-3xl px-10 py-8 shadow-xl text-center max-w-lg mb-10"
-        style={{ border: '1px solid rgba(255,255,255,0.8)' }}
+        className="bg-white/95 backdrop-blur-md rounded-3xl shadow-xl text-center max-w-lg mx-auto"
+        style={{ border: '1px solid rgba(255,255,255,0.8)', padding: '3.5rem 4rem', marginBottom: '3rem' }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.5 }}
@@ -189,8 +189,9 @@ function CharacterIntro({ onStart }: { onStart: () => void }) {
       </motion.div>
 
       <motion.button
-        className="px-12 py-5 rounded-full font-bold text-lg md:text-xl cursor-pointer bg-white text-blue-900 shadow-xl"
+        className="rounded-full font-bold text-lg md:text-xl cursor-pointer bg-white text-blue-900 shadow-xl"
         style={{
+          padding: '1.25rem 3.5rem',
           fontFamily: 'Nunito, sans-serif',
           border: '1px solid rgba(255,255,255,0.9)',
           boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
