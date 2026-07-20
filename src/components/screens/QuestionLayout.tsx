@@ -136,6 +136,8 @@ export default function QuestionLayout() {
   const [feedbackType, setFeedbackType] = useState<'wrong' | 'hint'>('hint');
   const [questionKey, setQuestionKey] = useState(0);
   const [showZoom, setShowZoom] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const [isSuccess, setIsSuccess] = useState(true);
 
   const currentQ = state.currentQuestion;
   const question = questions[currentQ];
@@ -147,17 +149,28 @@ export default function QuestionLayout() {
     if (isCorrect) {
       setAnswered(true);
       setFeedbackMsg(null);
+      setIsSuccess(true);
       dispatch({ type: 'EARN_PEARL', index: currentQ });
       setTimeout(() => setShowReward(true), 400);
     } else {
-      setFeedbackMsg(question.wrongFeedback);
-      setFeedbackType('wrong');
-      setTimeout(() => {
-        setSelectedId(null);
+      const newAttempts = attempts + 1;
+      setAttempts(newAttempts);
+
+      if (newAttempts >= 2) {
+        setAnswered(true);
         setFeedbackMsg(null);
-      }, 2000);
+        setIsSuccess(false);
+        setTimeout(() => setShowReward(true), 400);
+      } else {
+        setFeedbackMsg(question.wrongFeedback);
+        setFeedbackType('wrong');
+        setTimeout(() => {
+          setSelectedId(null);
+          setFeedbackMsg(null);
+        }, 2000);
+      }
     }
-  }, [currentQ, dispatch, question]);
+  }, [currentQ, dispatch, question, attempts]);
 
   const handleRewardComplete = () => {
     setShowReward(false);
@@ -165,6 +178,8 @@ export default function QuestionLayout() {
       setAnswered(false);
       setSelectedId(null);
       setFeedbackMsg(null);
+      setAttempts(0);
+      setIsSuccess(true);
       setQuestionKey(k => k + 1);
       dispatch({ type: 'NEXT_QUESTION' });
     }, 300);
@@ -181,8 +196,10 @@ export default function QuestionLayout() {
         pearlGradient={question.pearlGradient}
         pearlEmoji={question.pearlEmoji}
         pearlName={question.pearlName}
-        message={question.correctFeedback}
+        message={isSuccess ? question.correctFeedback : question.wrongFeedback}
         explanation={question.explanation}
+        isSuccess={isSuccess}
+        correctOptionText={question.options.find(o => o.isCorrect)?.text}
         onComplete={handleRewardComplete}
       />
 
