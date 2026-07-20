@@ -98,9 +98,10 @@ function ComicSidebar({ onZoom }: { onZoom: () => void }) {
       </motion.button>
 
       <div className="flex justify-center mt-2">
-        <p className="text-xs font-bold text-slate-800 bg-white/80 px-3 py-1 rounded-full shadow-sm" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          🔍 Click to enlarge
-        </p>
+        <div className="flex items-center gap-2 text-xs font-bold text-slate-800 bg-white/90 px-4 py-1.5 rounded-full shadow-sm" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          <span>🔍</span>
+          <span>Click to enlarge</span>
+        </div>
       </div>
     </div>
   );
