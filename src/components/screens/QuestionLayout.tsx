@@ -3,11 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import { questions } from '../../data/questions';
 import PearlBadge from '../ui/PearlBadge';
-import PearlReward from '../rewards/PearlReward';
+import FeedbackScreen from './FeedbackScreen';
 import SpeechBubbleChoice from '../games/SpeechBubbleChoice';
 import ReactionCards from '../games/ReactionCards';
 import TreasureChestSort from '../games/TreasureChestSort';
 import EmotionShellGame from '../games/EmotionShellGame';
+import TreasureDecoder from '../games/TreasureDecoder';
+import OceanMoodCompass from '../games/OceanMoodCompass';
 import comicStrip from '../../assets/comic-strip.png';
 
 // ─── Comic Zoom Modal ────────────────────────────────────────────────────────
@@ -102,36 +104,14 @@ function ComicSidebar({ onZoom }: { onZoom: () => void }) {
   );
 }
 
-// ─── Feedback Bar ────────────────────────────────────────────────────────────
-function FeedbackBar({ message, type }: { message: string; type: 'wrong' | 'hint' }) {
-  return (
-    <motion.div
-      className="rounded-2xl px-6 py-4 text-sm md:text-base font-semibold shadow-sm"
-      style={{
-        fontFamily: 'Nunito, sans-serif',
-        background: type === 'wrong' ? 'rgba(254,226,226,0.95)' : 'rgba(255,255,255,0.9)',
-        border: type === 'wrong' ? '1px solid #fca5a5' : '1px solid rgba(255,255,255,0.8)',
-        color: type === 'wrong' ? '#991b1b' : '#334155',
-      }}
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      role="alert"
-      aria-live="polite"
-    >
-      {type === 'wrong' ? '❌ Incorrect. ' : '🐢 '}{message}
-    </motion.div>
-  );
-}
+
 
 // ─── Main Layout ─────────────────────────────────────────────────────────────
 export default function QuestionLayout() {
   const { state, dispatch } = useGame();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [answered, setAnswered] = useState(false);
-  const [showReward, setShowReward] = useState(false);
-  const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
-  const [feedbackType, setFeedbackType] = useState<'wrong' | 'hint'>('hint');
+  const [showFeedback, setShowFeedback] = useState(false);
   const [questionKey, setQuestionKey] = useState(0);
   const [showZoom, setShowZoom] = useState(false);
 
@@ -141,48 +121,31 @@ export default function QuestionLayout() {
   const handleAnswer = useCallback((isCorrect: boolean, optionId: string) => {
     setSelectedId(optionId);
     dispatch({ type: 'INCREMENT_ATTEMPT', index: currentQ });
+    setAnswered(true);
 
     if (isCorrect) {
-      setAnswered(true);
-      setFeedbackMsg(null);
       dispatch({ type: 'EARN_PEARL', index: currentQ });
-      setTimeout(() => setShowReward(true), 400);
-    } else {
-      setFeedbackMsg(question.wrongFeedback);
-      setFeedbackType('wrong');
-      setTimeout(() => {
-        setSelectedId(null);
-        setFeedbackMsg(null);
-      }, 2000);
     }
-  }, [currentQ, dispatch, question]);
+    
+    // Show dedicated feedback screen after a short delay for game animations
+    setTimeout(() => setShowFeedback(true), 1200);
+  }, [currentQ, dispatch]);
 
-  const handleRewardComplete = () => {
-    setShowReward(false);
+  const handleContinue = () => {
+    setShowFeedback(false);
     setTimeout(() => {
       setAnswered(false);
       setSelectedId(null);
-      setFeedbackMsg(null);
       setQuestionKey(k => k + 1);
       dispatch({ type: 'NEXT_QUESTION' });
-    }, 300);
+    }, 400);
   };
 
   if (!question) return null;
 
   return (
     <>
-      {/* Pearl Reward Overlay */}
-      <PearlReward
-        show={showReward}
-        pearlColor={question.pearlColor}
-        pearlGradient={question.pearlGradient}
-        pearlEmoji={question.pearlEmoji}
-        pearlName={question.pearlName}
-        message={question.correctFeedback}
-        explanation={question.explanation}
-        onComplete={handleRewardComplete}
-      />
+
 
       {/* Comic Zoom Modal */}
       <AnimatePresence>
@@ -279,62 +242,100 @@ export default function QuestionLayout() {
             </motion.button>
           </details>
 
-          {/* Feedback bar */}
-          <AnimatePresence mode="wait">
-            {feedbackMsg && (
-              <FeedbackBar key={feedbackMsg} message={feedbackMsg} type={feedbackType} />
-            )}
-          </AnimatePresence>
 
-          {/* Game component */}
+
+          {/* Game component or Feedback Screen */}
           <AnimatePresence mode="wait">
-            <motion.div
-              key={`q-${currentQ}-${questionKey}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-            >
-              {question.gameType === 'speech-bubble' && (
-                <SpeechBubbleChoice
-                  options={question.options}
-                  questionText={question.questionText}
-                  onAnswer={handleAnswer}
-                  answered={answered}
-                  selectedId={selectedId}
+            {showFeedback ? (
+              <motion.div
+                key="feedback-screen"
+                className="flex-1 w-full flex items-center justify-center min-h-[400px]"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+              >
+                <FeedbackScreen
+                  isCorrect={question.options.find(o => o.id === selectedId)?.isCorrect || false}
+                  correctOption={question.options.find(o => o.isCorrect)!}
+                  explanation={question.explanation}
+                  feedbackText={
+                    question.options.find(o => o.id === selectedId)?.isCorrect 
+                      ? question.correctFeedback 
+                      : question.wrongFeedback
+                  }
+                  pearlEmoji={question.pearlEmoji}
+                  pearlName={question.pearlName}
+                  onContinue={handleContinue}
                 />
-              )}
-              {question.gameType === 'reaction-cards' && (
-                <ReactionCards
-                  options={question.options}
-                  questionText={question.questionText}
-                  contextText={question.contextText}
-                  onAnswer={handleAnswer}
-                  answered={answered}
-                  selectedId={selectedId}
-                />
-              )}
-              {question.gameType === 'treasure-chest' && (
-                <TreasureChestSort
-                  options={question.options}
-                  questionText={question.questionText}
-                  contextText={question.contextText}
-                  onAnswer={handleAnswer}
-                  answered={answered}
-                  selectedId={selectedId}
-                />
-              )}
-              {question.gameType === 'emotion-shells' && (
-                <EmotionShellGame
-                  options={question.options}
-                  questionText={question.questionText}
-                  contextText={question.contextText}
-                  onAnswer={handleAnswer}
-                  answered={answered}
-                  selectedId={selectedId}
-                />
-              )}
-            </motion.div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={`q-${currentQ}-${questionKey}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="w-full"
+              >
+                {question.gameType === 'speech-bubble' && (
+                  <SpeechBubbleChoice
+                    options={question.options}
+                    questionText={question.questionText}
+                    onAnswer={handleAnswer}
+                    answered={answered}
+                    selectedId={selectedId}
+                  />
+                )}
+                {question.gameType === 'reaction-cards' && (
+                  <ReactionCards
+                    options={question.options}
+                    questionText={question.questionText}
+                    contextText={question.contextText}
+                    onAnswer={handleAnswer}
+                    answered={answered}
+                    selectedId={selectedId}
+                  />
+                )}
+                {question.gameType === 'treasure-chest' && (
+                  <TreasureChestSort
+                    options={question.options}
+                    questionText={question.questionText}
+                    contextText={question.contextText}
+                    onAnswer={handleAnswer}
+                    answered={answered}
+                    selectedId={selectedId}
+                  />
+                )}
+                {question.gameType === 'emotion-shells' && (
+                  <EmotionShellGame
+                    options={question.options}
+                    questionText={question.questionText}
+                    contextText={question.contextText}
+                    onAnswer={handleAnswer}
+                    answered={answered}
+                    selectedId={selectedId}
+                  />
+                )}
+                {question.gameType === 'treasure-decoder' && (
+                  <TreasureDecoder
+                    options={question.options}
+                    questionText={question.questionText}
+                    contextText={question.contextText}
+                    onAnswer={handleAnswer}
+                    answered={answered}
+                    selectedId={selectedId}
+                  />
+                )}
+                {question.gameType === 'mood-compass' && (
+                  <OceanMoodCompass
+                    options={question.options}
+                    onAnswer={handleAnswer}
+                    answered={answered}
+                  />
+                )}
+              </motion.div>
+            )}
           </AnimatePresence>
         </motion.div>
       </div>

@@ -13,7 +13,7 @@ export interface Question {
   pearlColor: string;
   pearlGradient: string;
   skill: string;
-  gameType: 'speech-bubble' | 'reaction-cards' | 'treasure-chest' | 'emotion-shells';
+  gameType: 'speech-bubble' | 'reaction-cards' | 'treasure-chest' | 'emotion-shells' | 'treasure-decoder' | 'mood-compass';
   questionText: string;
   contextText?: string;
   correctFeedback: string;
@@ -71,19 +71,18 @@ export const questions: Question[] = [
     pearlEmoji: '🐚',
     pearlColor: '#a78bfa',
     pearlGradient: 'linear-gradient(135deg, #c4b5fd, #8b5cf6, #6d28d9)',
-    skill: 'Understanding vocabulary in context',
-    gameType: 'treasure-chest',
-    questionText: 'In the comic, "a present" means a gift. Which sentence uses "present" the SAME way?',
-    contextText: '"Then a package arrived, and she thought I got her a present."',
-    correctFeedback: "Wonderful! 'Present' here means a gift — just like in the comic! You found the right meaning! 🐚✨",
-    wrongFeedback: "Try again! In the comic, 'present' means a gift. Look for the sentence where it also means a gift! 🐚",
-    explanation: "In the comic, 'present' is used as a noun meaning a gift. 'The present from my grandparents arrived yesterday' also uses it to mean a gift.",
-    turtleTip: "In the comic, 'present' is used as a noun meaning a gift. Which chest has the same use?",
+    skill: 'Using context clues to infer meanings',
+    gameType: 'treasure-decoder',
+    questionText: 'Which sentence most closely matches the meaning of "fit to be tied"?',
+    correctFeedback: "Brilliant! You cracked the code! 'Fit to be tied' means being extremely angry, just like Arjun! 🐚✨",
+    wrongFeedback: "Not quite! 'Fit to be tied' means being extremely furious or angry. Which sentence shows the most anger? 🐚",
+    explanation: "\"Fit to be tied\" means being extremely angry or furious. Throwing a bag onto a sofa after a terrible day is a strong reaction that best shows this extreme anger.",
+    turtleTip: "Old sea creatures sometimes use unusual expressions. Let's unlock the meaning of this one! 'Fit to be tied' means very, very angry!",
     options: [
-      { id: 'A', text: '"The present from my grandparents arrived yesterday."', isCorrect: true },
-      { id: 'B', text: '"The museum will present a new collection next week."', isCorrect: false },
-      { id: 'C', text: '"The principal will present the trophy to the winner."', isCorrect: false },
-      { id: 'D', text: '"Students were present during the assembly."', isCorrect: false },
+      { id: 'A', text: 'Nisha looked upset when her friend forgot to call her.', isCorrect: false },
+      { id: 'B', text: 'Dev muttered unhappily when the picnic was cancelled.', isCorrect: false },
+      { id: 'C', text: 'After a terrible day, Arjun threw his bag onto the sofa.', isCorrect: true },
+      { id: 'D', text: 'Meera frowned when she could not find her favourite pen.', isCorrect: false },
     ],
   },
   {
@@ -93,17 +92,17 @@ export const questions: Question[] = [
     pearlColor: '#fbbf24',
     pearlGradient: 'linear-gradient(135deg, #fde68a, #f59e0b, #d97706)',
     skill: 'Identifying mood and tone',
-    gameType: 'emotion-shells',
-    questionText: 'The crab says "Oh, well." This shows the crab is accepting what happened and moving on. Which sentence has the SAME feeling?',
-    contextText: '"Oh, well." — The crab after hearing the shark\'s whole story.',
-    correctFeedback: "Amazing! Both sentences show calm acceptance — not happy, not angry, just... moving on. ✨🌟",
-    wrongFeedback: "Think about how the crab felt — not sad, not excited, just accepting what happened. Which one matches? ✨",
-    explanation: "The crab is accepting what happened and moving on, which is calm acceptance. 'Guess I'll grab another' shows the exact same calm acceptance.",
-    turtleTip: "'Oh, well' means accepting something and moving on calmly. Look for that same feeling!",
+    gameType: 'mood-compass',
+    questionText: 'Which words BEST describe the overall tone of the conversation between the shark and the crab?',
+    correctFeedback: "Amazing! The conversation is cheerful and amusing as they joke around! ✨🌟",
+    wrongFeedback: "Think about the overall feeling. They are sharing a funny story and bantering. How would you describe that? ✨",
+    explanation: "The conversation between the shark and the crab is light-hearted, full of jokes, and entertaining. This creates a cheerful and amusing tone.",
+    turtleTip: "Tone is the feeling or attitude of a conversation. Are they being serious, or are they having fun?",
     options: [
-      { id: 'A', text: '"I lost my pencil again. Guess I\'ll grab another."', isCorrect: true, feeling: 'Calm acceptance' },
-      { id: 'B', text: '"I can\'t believe I missed the party! I\'m so upset!"', isCorrect: false, feeling: 'Disappointment' },
-      { id: 'C', text: '"YES! I finally got the highest score!"', isCorrect: false, feeling: 'Excitement' },
+      { id: 'A', emoji: '🤝', text: 'Friendly and encouraging', isCorrect: false },
+      { id: 'B', emoji: '🎭', text: 'Curious and entertaining', isCorrect: false },
+      { id: 'C', emoji: '😊', text: 'Cheerful and amusing', isCorrect: true },
+      { id: 'D', emoji: '💭', text: 'Casual and thoughtful', isCorrect: false },
     ],
-  },
+  }
 ];
