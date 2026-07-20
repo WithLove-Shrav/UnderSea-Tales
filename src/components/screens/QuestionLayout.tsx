@@ -255,31 +255,6 @@ export default function QuestionLayout() {
             </div>
           </div>
 
-          {/* Pearl title card */}
-          <motion.div
-            className="rounded-2xl px-6 py-5 flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-white shadow-sm"
-            key={`pearl-${currentQ}`}
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-          >
-            <motion.span
-              className="text-4xl drop-shadow-sm"
-              animate={{ y: [-2, 2, -2] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              aria-hidden="true"
-            >
-              {question.pearlEmoji}
-            </motion.span>
-            <div>
-              <h2 className="text-lg md:text-xl font-bold" style={{ fontFamily: 'Fredoka One, cursive', color: '#0369a1' }}>
-                {question.pearlName}
-              </h2>
-              <p className="text-sm font-medium" style={{ fontFamily: 'Nunito, sans-serif', color: '#475569' }}>
-                Skill: {question.skill}
-              </p>
-            </div>
-          </motion.div>
 
           {/* Mobile comic strip toggle */}
           <details className="md:hidden">
@@ -373,6 +348,32 @@ export default function QuestionLayout() {
               )}
             </motion.div>
           </AnimatePresence>
+
+          {/* Pearl title card */}
+          <motion.div
+            className="rounded-2xl px-6 py-5 flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-white shadow-sm mt-4"
+            key={`pearl-${currentQ}`}
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+          >
+            <motion.span
+              className="text-4xl drop-shadow-sm"
+              animate={{ y: [-2, 2, -2] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+              aria-hidden="true"
+            >
+              {question.pearlEmoji}
+            </motion.span>
+            <div>
+              <h2 className="text-lg md:text-xl font-bold" style={{ fontFamily: 'Fredoka One, cursive', color: '#0369a1' }}>
+                {question.pearlName}
+              </h2>
+              <p className="text-sm md:text-base font-medium" style={{ fontFamily: 'Nunito, sans-serif', color: '#475569' }}>
+                Skill: {question.skill}
+              </p>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </>
