@@ -33,7 +33,7 @@ export default function TurtleGuide({ message, mood = 'happy', show = true, posi
         >
           {/* Speech bubble */}
           <motion.div
-            className="relative bg-white rounded-2xl px-4 py-3 shadow-xl max-w-xs"
+            className="relative bg-white rounded-2xl px-6 py-4 shadow-xl max-w-xs"
             style={{ border: '2px solid rgba(6,182,212,0.3)' }}
             initial={{ scale: 0, originX: 0, originY: 1 }}
             animate={{ scale: 1 }}

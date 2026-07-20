@@ -7,6 +7,7 @@ interface PearlRewardProps {
   pearlEmoji: string;
   pearlName: string;
   message: string;
+  explanation?: string;
   onComplete: () => void;
 }
 
@@ -26,7 +27,7 @@ function ConfettiPiece({ x, color, delay }: { x: number; color: string; delay: n
 
 const confettiColors = ['#fb7185', '#fbbf24', '#34d399', '#60a5fa', '#a78bfa', '#f97316'];
 
-export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGradient, pearlEmoji, pearlName, message, onComplete }: PearlRewardProps) {
+export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGradient, pearlEmoji, pearlName, message, explanation, onComplete }: PearlRewardProps) {
   const confetti = Array.from({ length: 20 }, (_, i) => ({
     x: Math.random() * 100,
     color: confettiColors[i % confettiColors.length],
@@ -67,9 +68,6 @@ export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGra
             animate={{ scale: 1, rotate: 0 }}
             exit={{ scale: 0.5, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-            onAnimationComplete={() => {
-              setTimeout(onComplete, 1800);
-            }}
           >
             {/* Flying pearl */}
             <motion.div
@@ -124,24 +122,39 @@ export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGra
               </motion.p>
             </div>
 
-            {/* Fish clapping */}
-            <motion.div
-              className="flex gap-3 text-2xl"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-              aria-hidden="true"
+            {/* Explanation Section */}
+            {explanation && (
+              <motion.div
+                className="mt-2 bg-white/50 px-6 py-4 rounded-2xl border border-white max-w-sm"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+              >
+                <p className="text-sm font-semibold text-blue-900" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                  <span className="font-bold text-blue-700 block mb-1">Why is this correct?</span>
+                  {explanation}
+                </p>
+              </motion.div>
+            )}
+
+            {/* Continue Button */}
+            <motion.button
+              className="mt-2 px-8 py-3 rounded-full font-bold text-white shadow-lg cursor-pointer"
+              style={{
+                fontFamily: 'Fredoka One, cursive',
+                background: `linear-gradient(135deg, ${pearlColor}, #2563eb)`,
+                border: '2px solid rgba(255,255,255,0.6)',
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onComplete}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+              aria-label="Continue to next question"
             >
-              {['🐠', '🐟', '🐡', '🦀'].map((fish, i) => (
-                <motion.span
-                  key={i}
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 0.5, delay: i * 0.1, repeat: 3 }}
-                >
-                  {fish}
-                </motion.span>
-              ))}
-            </motion.div>
+              Continue ✨
+            </motion.button>
           </motion.div>
         </motion.div>
       )}

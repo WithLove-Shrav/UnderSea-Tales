@@ -119,7 +119,7 @@ function FeedbackBar({ message, type }: { message: string; type: 'wrong' | 'hint
       role="alert"
       aria-live="polite"
     >
-      {type === 'wrong' ? '💡 ' : '🐢 '}{message}
+      {type === 'wrong' ? '❌ Incorrect. ' : '🐢 '}{message}
     </motion.div>
   );
 }
@@ -180,6 +180,7 @@ export default function QuestionLayout() {
         pearlEmoji={question.pearlEmoji}
         pearlName={question.pearlName}
         message={question.correctFeedback}
+        explanation={question.explanation}
         onComplete={handleRewardComplete}
       />
 
@@ -188,7 +189,7 @@ export default function QuestionLayout() {
         {showZoom && <ComicZoomModal onClose={() => setShowZoom(false)} />}
       </AnimatePresence>
 
-      <div className="flex min-h-screen p-3 gap-3" style={{ maxHeight: '100dvh', overflow: 'hidden' }}>
+      <div className="flex min-h-screen p-4 md:p-8 gap-6 md:gap-8" style={{ maxHeight: '100dvh', overflow: 'hidden' }}>
 
         {/* LEFT — Comic sidebar */}
         <motion.div
