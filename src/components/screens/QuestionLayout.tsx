@@ -97,7 +97,7 @@ function ComicSidebar({ onZoom }: { onZoom: () => void }) {
         </motion.div>
       </motion.button>
 
-      <p className="text-xs text-white/40 text-center" style={{ fontFamily: 'Nunito, sans-serif' }}>
+      <p className="text-xs font-bold text-white/80 text-center mt-1" style={{ fontFamily: 'Nunito, sans-serif' }}>
         Click to enlarge
       </p>
     </div>
