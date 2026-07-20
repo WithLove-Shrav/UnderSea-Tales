@@ -98,9 +98,8 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Speech bubble */}
             <motion.div
-              className="relative bg-white rounded-3xl px-12 py-7 shadow-2xl max-w-md text-center"
+              className="relative bg-white rounded-[2.5rem] px-16 py-8 shadow-2xl max-w-lg text-center mx-4"
               style={{ border: '3px solid rgba(6,182,212,0.4)' }}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
