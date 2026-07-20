@@ -81,8 +81,8 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="relative bg-white/95 backdrop-blur-lg rounded-[3rem] px-12 md:px-28 py-10 md:py-14 shadow-xl w-[95%] max-w-4xl text-center mx-auto"
-              style={{ border: '1px solid rgba(255,255,255,0.8)' }}
+              className="relative bg-white/95 backdrop-blur-lg rounded-[3rem] shadow-xl w-[95%] max-w-4xl text-center mx-auto"
+              style={{ border: '1px solid rgba(255,255,255,0.8)', padding: '3.5rem 5rem' }}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
@@ -137,8 +137,10 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
 
       {/* CTA Button */}
       <motion.button
-        className="px-12 py-5 mt-8 mb-4 rounded-full font-bold text-lg md:text-xl cursor-pointer bg-white text-blue-900 shadow-xl"
+        className="px-12 py-5 rounded-full font-bold text-lg md:text-xl cursor-pointer bg-white text-blue-900 shadow-xl"
         style={{
+          marginTop: '3rem',
+          marginBottom: '2rem',
           fontFamily: 'Nunito, sans-serif',
           border: '1px solid rgba(255,255,255,0.9)',
           boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
@@ -146,9 +148,9 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
         whileHover={{ scale: 1.02, backgroundColor: '#f8fafc', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)' }}
         whileTap={{ scale: 0.98 }}
         onClick={handleNext}
-        aria-label={step < tutorialSteps.length - 1 ? 'Next' : 'Meet the characters'}
+        aria-label={step < tutorialSteps.length - 1 ? 'Next Step' : 'Meet the characters'}
       >
-        {step < tutorialSteps.length - 1 ? 'Next →' : "Meet the Characters"}
+        {step < tutorialSteps.length - 1 ? 'Next Step →' : "Meet the Characters"}
       </motion.button>
     </div>
   );
