@@ -33,7 +33,7 @@ export default function TurtleGuide({ message, mood = 'happy', show = true, posi
         >
           {/* Speech bubble */}
           <motion.div
-            className="relative bg-white/95 backdrop-blur-md rounded-2xl px-6 py-4 shadow-lg max-w-xs"
+            className="relative bg-white/95 backdrop-blur-md rounded-2xl px-6 py-4 shadow-lg max-w-[260px] md:max-w-sm"
             style={{ border: '1px solid rgba(255,255,255,0.8)' }}
             initial={{ scale: 0.95, opacity: 0, originX: 0, originY: 1 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -41,7 +41,7 @@ export default function TurtleGuide({ message, mood = 'happy', show = true, posi
           >
             <div className="absolute -bottom-3 left-6 w-0 h-0" style={{ borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '12px solid rgba(255,255,255,0.95)' }} />
             <p
-              className="text-sm font-medium leading-snug"
+              className="text-sm md:text-base font-semibold leading-relaxed break-words"
               style={{ fontFamily: 'Nunito, sans-serif', color: '#0f172a' }}
             >
               {message}
