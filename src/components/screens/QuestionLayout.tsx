@@ -61,14 +61,14 @@ function ComicZoomModal({ onClose }: { onClose: () => void }) {
 // ─── Comic Sidebar (thumbnail + click to zoom) ───────────────────────────────
 function ComicSidebar({ onZoom }: { onZoom: () => void }) {
   return (
-    <div className="flex flex-col gap-2 h-full">
+    <div className="flex flex-col gap-2">
       <p className="text-xs font-bold text-white/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
         📖 Refer back to the comic anytime!
       </p>
 
       {/* Thumbnail — click to zoom */}
       <motion.button
-        className="relative rounded-2xl overflow-hidden shadow-xl flex-1 cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-white/60 text-left"
+        className="relative rounded-2xl overflow-hidden shadow-xl cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-white/60 text-left bg-white/10"
         style={{ border: '3px solid rgba(255,255,255,0.4)', minHeight: 0 }}
         onClick={onZoom}
         whileHover={{ scale: 1.02, borderColor: 'rgba(255,255,255,0.7)' }}
