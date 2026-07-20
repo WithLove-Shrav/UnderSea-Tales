@@ -81,7 +81,7 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
             transition={{ duration: 0.3 }}
           >
             <motion.div
-              className="relative bg-white/95 backdrop-blur-lg rounded-[3rem] px-16 md:px-48 py-16 md:py-20 shadow-xl w-[95%] max-w-4xl text-center mx-auto"
+              className="relative bg-white/95 backdrop-blur-lg rounded-[3rem] px-12 md:px-28 py-10 md:py-14 shadow-xl w-[95%] max-w-4xl text-center mx-auto"
               style={{ border: '1px solid rgba(255,255,255,0.8)' }}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -137,7 +137,7 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
 
       {/* CTA Button */}
       <motion.button
-        className="px-12 py-5 mt-16 mb-8 rounded-full font-bold text-lg md:text-xl cursor-pointer bg-white text-blue-900 shadow-xl"
+        className="px-12 py-5 mt-8 mb-4 rounded-full font-bold text-lg md:text-xl cursor-pointer bg-white text-blue-900 shadow-xl"
         style={{
           fontFamily: 'Nunito, sans-serif',
           border: '1px solid rgba(255,255,255,0.9)',
