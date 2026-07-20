@@ -23,9 +23,8 @@ export default function ReactionCards({ options, questionText, contextText, onAn
     <div className="flex flex-col gap-4 w-full">
       {/* Context + Question */}
       <motion.div
-        className="bg-white/95 rounded-2xl p-4 shadow-lg"
-        style={{ border: '2px solid rgba(52,211,153,0.4)' }}
-        initial={{ opacity: 0, y: 20 }}
+        className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         {contextText && (
@@ -48,47 +47,39 @@ export default function ReactionCards({ options, questionText, contextText, onAn
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8, y: -20 }}
           >
-            <p className="text-xs font-semibold text-white/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
+            <p className="text-sm font-semibold text-slate-600 mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
               What if the shark had opened the package FIRST?
             </p>
             <motion.button
-              className="flex flex-col items-center gap-2 cursor-pointer"
+              className="flex flex-col items-center gap-3 cursor-pointer"
               onClick={handleOpen}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               aria-label="Open the package to see what happens"
             >
               <motion.div
-                className="text-6xl"
-                animate={{ rotate: [0, -5, 5, -5, 5, 0] }}
-                transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                className="text-6xl drop-shadow-sm"
+                animate={{ rotate: [0, -2, 2, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
                 aria-hidden="true"
               >
                 📦
               </motion.div>
-              <motion.div
-                className="px-4 py-2 rounded-full font-bold text-sm"
-                style={{
-                  fontFamily: 'Fredoka One, cursive',
-                  background: 'linear-gradient(135deg, #34d399, #10b981)',
-                  color: 'white',
-                  boxShadow: '0 4px 16px rgba(16,185,129,0.4)',
-                }}
-                animate={{ y: [0, -4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
+              <div
+                className="px-6 py-3 rounded-full font-bold text-sm bg-white text-emerald-700 shadow-sm border border-emerald-100"
+                style={{ fontFamily: 'Nunito, sans-serif' }}
               >
-                🦈 Tap to Open!
-              </motion.div>
+                Tap to Open!
+              </div>
             </motion.button>
           </motion.div>
         ) : (
           <motion.div
             key="shark-opened"
-            className="flex items-center gap-3 bg-white/90 rounded-2xl p-3 shadow-lg"
-            style={{ border: '2px solid rgba(52,211,153,0.4)' }}
-            initial={{ opacity: 0, scale: 0.8 }}
+            className="flex items-center gap-4 bg-white/90 rounded-2xl p-5 shadow-sm border border-slate-200"
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: 'spring' }}
+            transition={{ duration: 0.4 }}
           >
             <div className="text-4xl" aria-hidden="true">🦈</div>
             <div>
@@ -109,31 +100,27 @@ export default function ReactionCards({ options, questionText, contextText, onAn
         {options.map((option, i) => (
           <motion.button
             key={option.id}
-            className="rounded-2xl p-3 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-400 relative overflow-hidden"
+            className="rounded-2xl p-5 md:p-6 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-400 relative overflow-hidden bg-white shadow-sm"
             style={{
               fontFamily: 'Nunito, sans-serif',
               background: answered && option.isCorrect
-                ? 'linear-gradient(135deg, #dcfce7, #bbf7d0)'
+                ? '#dcfce7'
                 : answered && selectedId === option.id && !option.isCorrect
-                ? 'linear-gradient(135deg, #fee2e2, #fecaca)'
-                : hoveredId === option.id
-                ? 'rgba(255,255,255,0.98)'
-                : 'rgba(255,255,255,0.9)',
+                ? '#fee2e2'
+                : 'white',
               border: answered && option.isCorrect
-                ? '2px solid #22c55e'
+                ? '1px solid #86efac'
                 : answered && selectedId === option.id
-                ? '2px solid #f87171'
+                ? '1px solid #fca5a5'
                 : hoveredId === option.id
-                ? '2px solid #34d399'
-                : '2px solid rgba(148,163,184,0.3)',
-              boxShadow: answered && option.isCorrect ? '0 0 20px rgba(34,197,94,0.3)' : 'none',
-              opacity: answered && !option.isCorrect && selectedId !== option.id ? 0.5 : 1,
+                ? '1px solid #10b981'
+                : '1px solid #e2e8f0',
             }}
-            initial={{ opacity: 0, y: 20, scale: 0.9 }}
-            animate={{ opacity: answered && !option.isCorrect && selectedId !== option.id ? 0.5 : 1, y: 0, scale: 1 }}
-            transition={{ delay: packageOpened ? i * 0.1 : 0, type: 'spring', stiffness: 300 }}
-            whileHover={!answered ? { scale: 1.04, y: -3 } : {}}
-            whileTap={!answered ? { scale: 0.96 } : {}}
+            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+            animate={{ opacity: answered && !option.isCorrect && selectedId !== option.id ? 0.4 : 1, y: 0, scale: 1 }}
+            transition={{ delay: packageOpened ? i * 0.05 : 0, duration: 0.3 }}
+            whileHover={!answered ? { backgroundColor: '#f8fafc' } : {}}
+            whileTap={!answered ? { scale: 0.98 } : {}}
             onClick={() => !answered && onAnswer(option.isCorrect, option.id)}
             onHoverStart={() => setHoveredId(option.id)}
             onHoverEnd={() => setHoveredId(null)}
@@ -183,12 +170,12 @@ export default function ReactionCards({ options, questionText, contextText, onAn
 
       {!packageOpened && (
         <motion.p
-          className="text-center text-xs text-white/70 font-semibold"
+          className="text-center text-sm text-slate-500 font-medium"
           style={{ fontFamily: 'Nunito, sans-serif' }}
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          animate={{ opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 3, repeat: Infinity }}
         >
-          👆 Open the package first to unlock the reaction cards!
+          👆 Open the package first to unlock the reaction cards
         </motion.p>
       )}
     </div>

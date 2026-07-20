@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { QuestionOption } from '../../data/questions';
 
 interface EmotionShellGameProps {
@@ -25,25 +25,24 @@ function Shell({ option, index, onSelect, answered, isCorrect, isSelected, isWro
 
   return (
     <motion.button
-      className="flex flex-col items-center gap-2 p-3 rounded-2xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400 relative"
+      className="flex flex-col items-center gap-2 p-5 md:p-6 rounded-2xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400 relative bg-white shadow-sm"
       style={{
         background: isCorrect
-          ? 'linear-gradient(135deg, #fef3c7, #fde68a)'
+          ? '#fef9c3'
           : isWrong
-          ? 'linear-gradient(135deg, #fee2e2, #fecaca)'
-          : 'rgba(255,255,255,0.92)',
+          ? '#fee2e2'
+          : 'white',
         border: isCorrect
-          ? '2px solid #f59e0b'
+          ? '1px solid #fde047'
           : isWrong
-          ? '2px solid #f87171'
-          : '2px solid rgba(148,163,184,0.3)',
-        boxShadow: isCorrect ? '0 0 20px rgba(251,191,36,0.4)' : 'none',
+          ? '1px solid #fca5a5'
+          : '1px solid #e2e8f0',
         opacity: answered && !isCorrect && !isSelected ? 0.5 : 1,
       }}
       onClick={() => !answered && onSelect(option)}
       disabled={answered}
-      whileHover={!answered ? { y: -6, scale: 1.04 } : {}}
-      whileTap={!answered ? { scale: 0.95 } : {}}
+      whileHover={!answered ? { scale: 1.02, backgroundColor: '#f8fafc' } : {}}
+      whileTap={!answered ? { scale: 0.98 } : {}}
       initial={{ opacity: 0, y: 30 }}
       animate={{
         opacity: answered && !isCorrect && !isSelected ? 0.5 : 1,
@@ -57,9 +56,9 @@ function Shell({ option, index, onSelect, answered, isCorrect, isSelected, isWro
       {/* Wave animation under shell */}
       <motion.div
         className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl pointer-events-none"
-        style={{ background: 'linear-gradient(90deg, transparent, rgba(251,191,36,0.4), transparent)' }}
-        animate={{ scaleX: [0.5, 1, 0.5], opacity: [0.3, 0.8, 0.3] }}
-        transition={{ duration: 2 + index * 0.5, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ background: 'linear-gradient(90deg, transparent, rgba(253,224,71,0.5), transparent)' }}
+        animate={{ scaleX: [0.8, 1, 0.8], opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
         aria-hidden="true"
       />
 
@@ -79,8 +78,8 @@ function Shell({ option, index, onSelect, answered, isCorrect, isSelected, isWro
 
       {/* Sentence */}
       <p
-        className="text-xs font-semibold text-center leading-snug"
-        style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f', maxWidth: 140 }}
+        className="text-sm font-medium text-center leading-snug"
+        style={{ fontFamily: 'Nunito, sans-serif', color: '#1e293b' }}
       >
         {option.text}
       </p>
@@ -128,9 +127,8 @@ export default function EmotionShellGame({ options, questionText, contextText, o
     <div className="flex flex-col gap-4 w-full">
       {/* Question */}
       <motion.div
-        className="bg-white/95 rounded-2xl p-4 shadow-lg"
-        style={{ border: '2px solid rgba(251,191,36,0.4)' }}
-        initial={{ opacity: 0, y: 20 }}
+        className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         <p className="text-sm font-bold leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
@@ -140,16 +138,15 @@ export default function EmotionShellGame({ options, questionText, contextText, o
 
       {/* "Oh, well" target phrase */}
       <motion.div
-        className="relative rounded-2xl p-4 text-center overflow-hidden"
+        className="relative rounded-2xl p-6 md:p-8 text-center overflow-hidden bg-white/90 shadow-sm border border-slate-200"
         style={{
           background: glowing
-            ? 'linear-gradient(135deg, #fef3c7, #fde68a, #fbbf24)'
-            : 'linear-gradient(135deg, rgba(251,191,36,0.2), rgba(245,158,11,0.1))',
-          border: `2px solid ${glowing ? '#f59e0b' : 'rgba(251,191,36,0.4)'}`,
-          boxShadow: glowing ? '0 0 30px 10px rgba(251,191,36,0.4)' : 'none',
+            ? '#fef9c3'
+            : 'rgba(255,255,255,0.9)',
+          border: `1px solid ${glowing ? '#fde047' : '#e2e8f0'}`,
         }}
-        animate={glowing ? { scale: [1, 1.05, 1] } : {}}
-        transition={{ duration: 0.5, repeat: glowing ? 2 : 0 }}
+        animate={glowing ? { scale: [1, 1.02, 1] } : {}}
+        transition={{ duration: 0.5, repeat: glowing ? 1 : 0 }}
       >
         {/* Ocean wave background */}
         <motion.div
@@ -194,20 +191,7 @@ export default function EmotionShellGame({ options, questionText, contextText, o
         ))}
       </div>
 
-      {/* Ocean brightening effect */}
-      <AnimatePresence>
-        {glowing && (
-          <motion.div
-            className="fixed inset-0 pointer-events-none z-0"
-            style={{ background: 'radial-gradient(circle at 50% 50%, rgba(251,191,36,0.15), transparent 70%)' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            aria-hidden="true"
-          />
-        )}
-      </AnimatePresence>
+      {/* Removed full-screen ocean glow effect */}
     </div>
   );
 }

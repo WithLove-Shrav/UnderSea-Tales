@@ -21,11 +21,11 @@ function TreasureChest({ option, isOpen, isCorrect, isWrong, onClick, answered }
 }) {
   return (
     <motion.button
-      className="flex flex-col items-center gap-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-yellow-400 rounded-2xl p-2"
+      className="flex flex-col items-center gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-400 rounded-2xl p-3 bg-white/50 border border-transparent hover:bg-white hover:border-slate-200 transition-colors"
       onClick={onClick}
       disabled={answered}
-      whileHover={!answered ? { scale: 1.06, y: -4 } : {}}
-      whileTap={!answered ? { scale: 0.94 } : {}}
+      whileHover={!answered ? { scale: 1.02 } : {}}
+      whileTap={!answered ? { scale: 0.98 } : {}}
       aria-label={`Chest ${option.id}: ${isOpen ? option.text : 'Click to open'}`}
       aria-pressed={isOpen}
     >
@@ -52,21 +52,21 @@ function TreasureChest({ option, isOpen, isCorrect, isWrong, onClick, answered }
         {isCorrect && (
           <motion.div
             className="absolute inset-0 rounded-full pointer-events-none"
-            style={{ background: 'radial-gradient(circle, rgba(251,191,36,0.6), transparent)' }}
-            animate={{ scale: [1, 2], opacity: [1, 0] }}
-            transition={{ duration: 1, repeat: 3 }}
+            style={{ border: '4px solid rgba(34,197,94,0.4)', scale: 1.2 }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
           />
         )}
       </div>
 
       {/* Chest label */}
       <div
-        className="rounded-full px-3 py-1 text-sm font-bold"
+        className="rounded-full px-4 py-1.5 text-sm font-bold shadow-sm"
         style={{
-          fontFamily: 'Fredoka One, cursive',
-          background: isCorrect ? 'linear-gradient(135deg, #fbbf24, #f59e0b)' : isWrong ? '#fee2e2' : 'rgba(255,255,255,0.9)',
-          color: isCorrect ? 'white' : isWrong ? '#ef4444' : '#1e3a5f',
-          border: isCorrect ? '2px solid #f59e0b' : isWrong ? '2px solid #f87171' : '2px solid rgba(148,163,184,0.3)',
+          fontFamily: 'Nunito, sans-serif',
+          background: isCorrect ? '#dcfce7' : isWrong ? '#fee2e2' : '#ffffff',
+          color: isCorrect ? '#166534' : isWrong ? '#991b1b' : '#334155',
+          border: isCorrect ? '1px solid #86efac' : isWrong ? '1px solid #fca5a5' : '1px solid #cbd5e1',
         }}
       >
         Chest {option.id}
@@ -76,12 +76,12 @@ function TreasureChest({ option, isOpen, isCorrect, isWrong, onClick, answered }
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="rounded-xl px-3 py-2 text-xs font-semibold text-center max-w-36"
+            className="rounded-xl px-4 py-3 text-sm font-medium text-center max-w-40 shadow-sm mt-2"
             style={{
               fontFamily: 'Nunito, sans-serif',
-              background: isCorrect ? 'linear-gradient(135deg, #dcfce7, #bbf7d0)' : isWrong ? '#fee2e2' : 'rgba(255,255,255,0.95)',
-              border: `2px solid ${isCorrect ? '#22c55e' : isWrong ? '#f87171' : 'rgba(148,163,184,0.4)'}`,
-              color: '#1e3a5f',
+              background: isCorrect ? '#f0fdf4' : isWrong ? '#fef2f2' : '#ffffff',
+              border: `1px solid ${isCorrect ? '#86efac' : isWrong ? '#fca5a5' : '#e2e8f0'}`,
+              color: '#1e293b',
             }}
             initial={{ opacity: 0, y: -10, scale: 0.8 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -113,9 +113,8 @@ export default function TreasureChestSort({ options, questionText, contextText, 
     <div className="flex flex-col gap-4 w-full">
       {/* Context from comic */}
       <motion.div
-        className="bg-white/95 rounded-2xl p-4 shadow-lg"
-        style={{ border: '2px solid rgba(167,139,250,0.4)' }}
-        initial={{ opacity: 0, y: 20 }}
+        className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200"
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
         {contextText && (
@@ -132,13 +131,13 @@ export default function TreasureChestSort({ options, questionText, contextText, 
 
       {/* Instructions */}
       <motion.p
-        className="text-center text-xs font-semibold text-white/80"
+        className="text-center text-sm font-medium text-slate-500"
         style={{ fontFamily: 'Nunito, sans-serif' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        {answered ? '🎉 Great work!' : openedChests.length === 0 ? '👆 Tap a chest to open it, then tap again to choose your answer!' : '👇 Tap any open chest to select your answer!'}
+        {answered ? '🎉 Great work!' : openedChests.length === 0 ? '👆 Tap a chest to open it, then tap again to choose your answer' : '👇 Tap any open chest to select your answer'}
       </motion.p>
 
       {/* Treasure chests grid */}

@@ -33,16 +33,16 @@ export default function TurtleGuide({ message, mood = 'happy', show = true, posi
         >
           {/* Speech bubble */}
           <motion.div
-            className="relative bg-white rounded-2xl px-6 py-4 shadow-xl max-w-xs"
-            style={{ border: '2px solid rgba(6,182,212,0.3)' }}
-            initial={{ scale: 0, originX: 0, originY: 1 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 25, delay: 0.1 }}
+            className="relative bg-white/95 backdrop-blur-md rounded-2xl px-6 py-4 shadow-lg max-w-xs"
+            style={{ border: '1px solid rgba(255,255,255,0.8)' }}
+            initial={{ scale: 0.95, opacity: 0, originX: 0, originY: 1 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25, delay: 0.1 }}
           >
-            <div className="speech-bubble-tail" />
+            <div className="absolute -bottom-3 left-6 w-0 h-0" style={{ borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '12px solid rgba(255,255,255,0.95)' }} />
             <p
-              className="text-sm font-bold leading-snug"
-              style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}
+              className="text-sm font-medium leading-snug"
+              style={{ fontFamily: 'Nunito, sans-serif', color: '#0f172a' }}
             >
               {message}
             </p>
@@ -50,13 +50,13 @@ export default function TurtleGuide({ message, mood = 'happy', show = true, posi
 
           {/* Turtle character */}
           <motion.div
-            className="flex flex-col items-center"
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+            className="flex flex-col items-center opacity-90"
+            animate={{ y: [-2, 2, -2] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           >
             <motion.div
-              className="text-5xl select-none relative"
-              whileHover={{ scale: 1.1, rotate: [-3, 3, -3] }}
+              className="text-4xl select-none relative"
+              whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
               title="Tully the Turtle"
             >
@@ -72,8 +72,8 @@ export default function TurtleGuide({ message, mood = 'happy', show = true, posi
               </motion.span>
             </motion.div>
             <p
-              className="text-xs font-bold text-white mt-1 drop-shadow"
-              style={{ fontFamily: 'Fredoka One, cursive', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
+              className="text-xs font-semibold text-white/90 mt-1"
+              style={{ fontFamily: 'Nunito, sans-serif' }}
             >
               Tully
             </p>

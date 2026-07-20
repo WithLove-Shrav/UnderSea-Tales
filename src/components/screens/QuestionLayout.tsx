@@ -106,12 +106,12 @@ function ComicSidebar({ onZoom }: { onZoom: () => void }) {
 function FeedbackBar({ message, type }: { message: string; type: 'wrong' | 'hint' }) {
   return (
     <motion.div
-      className="rounded-2xl px-4 py-3 text-sm font-semibold"
+      className="rounded-2xl px-6 py-4 text-sm md:text-base font-semibold shadow-sm"
       style={{
         fontFamily: 'Nunito, sans-serif',
-        background: type === 'wrong' ? 'rgba(254,226,226,0.95)' : 'rgba(254,243,199,0.95)',
-        border: type === 'wrong' ? '2px solid #fca5a5' : '2px solid #fde68a',
-        color: type === 'wrong' ? '#991b1b' : '#92400e',
+        background: type === 'wrong' ? 'rgba(254,226,226,0.95)' : 'rgba(255,255,255,0.9)',
+        border: type === 'wrong' ? '1px solid #fca5a5' : '1px solid rgba(255,255,255,0.8)',
+        color: type === 'wrong' ? '#991b1b' : '#334155',
       }}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
@@ -210,8 +210,8 @@ export default function QuestionLayout() {
           transition={{ duration: 0.5 }}
         >
           {/* Top HUD — Pearl collection */}
-          <div className="glass-card rounded-2xl px-4 py-3 flex items-center gap-3 flex-wrap">
-            <div className="flex gap-2 flex-1">
+          <div className="bg-white/40 backdrop-blur-md rounded-2xl px-6 py-4 flex items-center justify-between gap-4 border border-white/60 shadow-sm">
+            <div className="flex gap-3">
               {questions.map((q, i) => (
                 <PearlBadge
                   key={i}
@@ -238,29 +238,25 @@ export default function QuestionLayout() {
 
           {/* Pearl title card */}
           <motion.div
-            className="rounded-2xl px-4 py-3 flex items-center gap-3"
-            style={{
-              background: `linear-gradient(135deg, ${question.pearlColor}33, ${question.pearlColor}11)`,
-              border: `2px solid ${question.pearlColor}55`,
-            }}
+            className="rounded-2xl px-6 py-5 flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-white shadow-sm"
             key={`pearl-${currentQ}`}
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: 'spring' }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
           >
             <motion.span
-              className="text-3xl"
-              animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              className="text-4xl drop-shadow-sm"
+              animate={{ y: [-2, 2, -2] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               aria-hidden="true"
             >
               {question.pearlEmoji}
             </motion.span>
             <div>
-              <h2 className="text-base font-bold text-white" style={{ fontFamily: 'Fredoka One, cursive' }}>
+              <h2 className="text-lg md:text-xl font-bold" style={{ fontFamily: 'Fredoka One, cursive', color: '#0369a1' }}>
                 {question.pearlName}
               </h2>
-              <p className="text-xs text-white/70" style={{ fontFamily: 'Nunito, sans-serif' }}>
+              <p className="text-sm font-medium" style={{ fontFamily: 'Nunito, sans-serif', color: '#475569' }}>
                 Skill: {question.skill}
               </p>
             </div>
