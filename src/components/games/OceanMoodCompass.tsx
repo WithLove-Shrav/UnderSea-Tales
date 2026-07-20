@@ -4,12 +4,14 @@ import type { QuestionOption } from '../../data/questions';
 
 interface OceanMoodCompassProps {
   options: QuestionOption[];
+  questionText: string;
   onAnswer: (isCorrect: boolean, optionId: string) => void;
   answered: boolean;
 }
 
 export default function OceanMoodCompass({
   options,
+  questionText,
   onAnswer,
   answered
 }: OceanMoodCompassProps) {
@@ -45,6 +47,11 @@ export default function OceanMoodCompass({
   return (
     <div className="flex flex-col items-center justify-center w-full h-[500px] relative">
       
+      {/* Question Text */}
+      <h2 className="absolute top-0 text-xl md:text-2xl font-bold text-slate-800 text-center z-20 px-4" style={{ fontFamily: 'Nunito, sans-serif' }}>
+        {questionText}
+      </h2>
+
       {/* Center Label */}
       <motion.div
         className="absolute z-10 bg-white/90 backdrop-blur-md rounded-full w-32 h-32 flex flex-col items-center justify-center shadow-md border border-slate-200"

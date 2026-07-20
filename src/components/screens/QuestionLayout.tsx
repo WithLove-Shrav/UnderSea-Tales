@@ -349,6 +349,7 @@ export default function QuestionLayout() {
               {question.gameType === 'mood-compass' && (
                 <OceanMoodCompass
                   options={question.options}
+                  questionText={question.questionText}
                   onAnswer={handleAnswer}
                   answered={answered}
                 />
