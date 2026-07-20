@@ -108,7 +108,7 @@ function ComicSidebar({ onZoom }: { onZoom: () => void }) {
 function FeedbackBar({ message, type }: { message: string; type: 'wrong' | 'hint' }) {
   return (
     <motion.div
-      className="rounded-2xl px-6 py-4 text-sm md:text-base font-semibold shadow-sm"
+      className="rounded-2xl px-6 py-4 text-sm md:text-base font-semibold shadow-sm text-center flex items-center justify-center"
       style={{
         fontFamily: 'Nunito, sans-serif',
         background: type === 'wrong' ? 'rgba(254,226,226,0.95)' : 'rgba(255,255,255,0.9)',
@@ -273,12 +273,6 @@ export default function QuestionLayout() {
             </motion.button>
           </details>
 
-          {/* Feedback bar */}
-          <AnimatePresence mode="wait">
-            {feedbackMsg && (
-              <FeedbackBar key={feedbackMsg} message={feedbackMsg} type={feedbackType} />
-            )}
-          </AnimatePresence>
 
           {/* Game component */}
           <AnimatePresence mode="wait">
@@ -347,6 +341,13 @@ export default function QuestionLayout() {
                 />
               )}
             </motion.div>
+          </AnimatePresence>
+
+          {/* Feedback bar (Moved below options) */}
+          <AnimatePresence mode="wait">
+            {feedbackMsg && (
+              <FeedbackBar key={feedbackMsg} message={feedbackMsg} type={feedbackType} />
+            )}
           </AnimatePresence>
 
           {/* Pearl title card */}
