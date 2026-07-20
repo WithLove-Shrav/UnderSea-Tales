@@ -59,7 +59,6 @@ export const questions: Question[] = [
     skill: 'Suggesting an alternative outcome',
     gameType: 'reaction-cards',
     questionText: "If the shark had opened the package BEFORE his wife saw it, how would she MOST likely react?",
-    contextText: "The package arrived. His wife thought it was her birthday present — but it was really his new putter.",
     correctFeedback: "Perfect thinking! She would be neutral — she wouldn't be angry or excited, because it was just his golf putter. 🌊✨",
     wrongFeedback: "Think carefully — if she saw it was just his golf putter, not a present for her, how would she feel? 🌊",
     explanation: "Since it is a golf putter, it is not a present for her. So, she would be neutral instead of angry or excited.",
