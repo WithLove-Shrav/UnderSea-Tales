@@ -130,35 +130,39 @@ export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGra
             {/* Explanation Section */}
             {!isSuccess && correctOptionText && (
               <motion.div
-                className="mt-2 bg-slate-50 px-8 py-5 rounded-2xl border border-slate-200 w-full max-w-sm text-center"
+                className="mt-2 bg-slate-50 px-8 py-5 rounded-2xl border border-slate-200 w-full max-w-md md:max-w-lg text-center mx-auto"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
               >
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                  The correct answer is:
-                </p>
-                <p className="text-sm md:text-base font-bold text-slate-800 leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                  {correctOptionText}
-                </p>
+                <div className="w-full px-2 md:px-4">
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                    The correct answer is:
+                  </p>
+                  <p className="text-sm md:text-base font-bold text-slate-800 leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                    {correctOptionText}
+                  </p>
+                </div>
               </motion.div>
             )}
 
             {explanation && (
               <motion.div
-                className={`mt-2 px-8 py-5 rounded-2xl border w-full max-w-sm text-center ${
+                className={`mt-2 px-8 py-5 rounded-2xl border w-full max-w-md md:max-w-lg text-center mx-auto ${
                   isSuccess ? 'bg-white/50 border-white' : 'bg-sky-50 border-sky-100'
                 }`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
-                <p className="text-sm md:text-base font-semibold text-blue-900" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                  <span className="font-bold text-blue-700 block mb-2 uppercase tracking-wide text-xs">
-                    {isSuccess ? 'Why is this correct?' : 'Tully says:'}
-                  </span>
-                  {explanation}
-                </p>
+                <div className="w-full px-2 md:px-4">
+                  <p className="text-sm md:text-base font-semibold text-blue-900 leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                    <span className="font-bold text-blue-700 block mb-2 uppercase tracking-wide text-xs">
+                      {isSuccess ? 'Why is this correct?' : 'Tully says:'}
+                    </span>
+                    {explanation}
+                  </p>
+                </div>
               </motion.div>
             )}
 
