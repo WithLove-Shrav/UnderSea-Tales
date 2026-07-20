@@ -1,48 +1,45 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
-import { comicPanels } from '../../data/comicPanels';
 import comicStrip from '../../assets/comic-strip.png';
 
-// Individual panel using CSS clipping to show 1/8 of the strip
-function PanelView({ panelIndex, large = false }: { panelIndex: number; large?: boolean }) {
-  const panel = comicPanels[panelIndex];
-  if (!panel) return null;
+// Import individual panel images
+import panel1 from '../../assets/1_block.png';
+import panel2 from '../../assets/2_block.png';
+import panel3 from '../../assets/3_block.png';
+import panel4 from '../../assets/4_block.png';
+import panel5 from '../../assets/5_block.png';
+import panel6 from '../../assets/6_block.png';
+import panel7 from '../../assets/7_bloxk.png';
+import panel8 from '../../assets/8_block.png';
 
-  // Grid layout: 4 cols × 2 rows
-  const col = panelIndex % 4;
-  const row = Math.floor(panelIndex / 4);
+const panelImages = [panel1, panel2, panel3, panel4, panel5, panel6, panel7, panel8];
+const panelLabels = [
+  'Panel 1', 'Panel 2', 'Panel 3', 'Panel 4',
+  'Panel 5', 'Panel 6', 'Panel 7', 'Panel 8',
+];
+const TOTAL_PANELS = panelImages.length;
 
-  // We show the image cropped. We use object-fit + transform translate trick:
-  // The container clips, the img is scaled 4x wide and 2x tall, then translated.
-  const containerH = large ? 340 : 260;
-  const containerW = large ? '100%' : '100%';
-
+// Single panel displayed as a square block
+function PanelView({ panelIndex }: { panelIndex: number }) {
   return (
     <div
-      className="relative rounded-2xl overflow-hidden shadow-2xl"
-      style={{ width: containerW, height: containerH, flexShrink: 0 }}
-      aria-label={`${panel.label}: ${panel.dialogue || ''}`}
+      className="relative rounded-2xl overflow-hidden shadow-2xl w-full"
+      style={{ aspectRatio: '1 / 1' }}
+      aria-label={panelLabels[panelIndex]}
     >
       <img
-        src={comicStrip}
-        alt={`Comic panel ${panelIndex + 1}: ${panel.dialogue || ''}`}
-        style={{
-          position: 'absolute',
-          width: '400%',
-          height: '200%',
-          top: `${-row * 100}%`,
-          left: `${-col * 100}%`,
-          objectFit: 'fill',
-        }}
+        src={panelImages[panelIndex]}
+        alt={`Comic ${panelLabels[panelIndex]}`}
+        className="w-full h-full object-cover"
         draggable={false}
       />
-      {/* Panel number badge */}
+      {/* Panel badge */}
       <div
-        className="absolute top-2 left-2 rounded-full px-3 py-1 text-xs font-bold"
+        className="absolute top-3 left-3 rounded-full px-3 py-1 text-xs font-bold"
         style={{ background: 'rgba(0,0,0,0.55)', color: 'white', fontFamily: 'Fredoka One, cursive' }}
       >
-        {panel.label}
+        {panelLabels[panelIndex]}
       </div>
     </div>
   );
@@ -54,9 +51,9 @@ function FullStripView() {
     <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white/40">
       <img
         src={comicStrip}
-        alt="Full comic strip: Undersea Tales — Sherman's Lagoon by Jim Toomey. A shark and crab discuss why the crab isn't feeling crabby."
+        alt="Full comic strip: Undersea Tales by Jim Toomey"
         className="w-full h-auto"
-        style={{ maxWidth: '100%', display: 'block' }}
+        style={{ display: 'block' }}
       />
     </div>
   );
@@ -66,8 +63,7 @@ function FullStripView() {
 function CrabProgress({ current, total }: { current: number; total: number }) {
   const percent = ((current + 1) / total) * 100;
   return (
-    <div className="relative flex items-center gap-3">
-      {/* Track */}
+    <div className="relative flex items-center gap-3 w-full">
       <div className="flex-1 h-4 rounded-full overflow-hidden shadow-inner" style={{ background: 'rgba(255,255,255,0.2)' }}>
         <motion.div
           className="h-full rounded-full"
@@ -76,12 +72,10 @@ function CrabProgress({ current, total }: { current: number; total: number }) {
           transition={{ duration: 0.5, type: 'spring' }}
         />
       </div>
-      {/* Crab */}
       <motion.div
         className="absolute top-1/2 -translate-y-1/2 text-xl pointer-events-none"
-        animate={{ left: `calc(${Math.max(percent - 4, 0)}% - 2px)` }}
+        animate={{ left: `calc(${Math.max(percent - 5, 0)}%)` }}
         transition={{ duration: 0.5, type: 'spring' }}
-        style={{ left: `${Math.max(percent - 4, 0)}%` }}
         aria-hidden="true"
       >
         <motion.span
@@ -96,12 +90,12 @@ function CrabProgress({ current, total }: { current: number; total: number }) {
 }
 
 export default function ComicReader() {
-  const { state, dispatch, totalPanels } = useGame();
+  const { state, dispatch } = useGame();
   const [showFullStrip, setShowFullStrip] = useState(false);
   const [direction, setDirection] = useState(0);
 
   const { currentPanel } = state;
-  const isLast = currentPanel === totalPanels - 1;
+  const isLast = currentPanel === TOTAL_PANELS - 1;
   const isFirst = currentPanel === 0;
 
   const goNext = () => {
@@ -141,12 +135,12 @@ export default function ComicReader() {
           📖 {showFullStrip ? 'Full Comic Strip' : 'Comic Reader'}
         </h2>
         <p className="text-sm font-semibold text-white/80 mt-1" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          {showFullStrip ? "Review the whole story before your challenge!" : "Take your time — read each panel carefully!"}
+          {showFullStrip ? 'Review the whole story before your challenge!' : 'Take your time — read each panel carefully!'}
         </p>
       </motion.div>
 
-      {/* Main panel area */}
-      <div className="w-full max-w-2xl">
+      {/* Main panel / full strip area */}
+      <div className="w-full max-w-sm">
         <AnimatePresence mode="wait" custom={direction}>
           {showFullStrip ? (
             <motion.div
@@ -168,41 +162,24 @@ export default function ComicReader() {
               exit="exit"
               transition={{ duration: 0.4, type: 'spring', stiffness: 300, damping: 30 }}
             >
-              <PanelView panelIndex={currentPanel} large />
+              <PanelView panelIndex={currentPanel} />
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Panel speech bubble */}
-      {!showFullStrip && comicPanels[currentPanel]?.dialogue && (
-        <motion.div
-          key={`speech-${currentPanel}`}
-          className="bg-white/90 rounded-2xl px-5 py-3 max-w-lg text-center shadow-lg"
-          style={{ border: '2px solid rgba(6,182,212,0.3)' }}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, delay: 0.2 }}
-        >
-          <p className="text-sm font-semibold" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
-            💬 {comicPanels[currentPanel].dialogue}
-          </p>
-        </motion.div>
-      )}
-
       {/* Progress bar */}
       {!showFullStrip && (
-        <div className="w-full max-w-lg px-2">
-          <div className="flex justify-between items-center mb-1">
+        <div className="w-full max-w-sm px-2">
+          <div className="flex justify-between items-center mb-2">
             <span className="text-xs font-bold text-white/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              Panel {currentPanel + 1} of {totalPanels}
+              Panel {currentPanel + 1} of {TOTAL_PANELS}
             </span>
             <span className="text-xs font-bold text-white/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
-              {Math.round(((currentPanel + 1) / totalPanels) * 100)}% read
+              {Math.round(((currentPanel + 1) / TOTAL_PANELS) * 100)}% read
             </span>
           </div>
-          <CrabProgress current={currentPanel} total={totalPanels} />
+          <CrabProgress current={currentPanel} total={TOTAL_PANELS} />
         </div>
       )}
 
@@ -215,6 +192,7 @@ export default function ComicReader() {
             background: isFirst && !showFullStrip ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.9)',
             color: '#1e3a5f',
             border: '2px solid rgba(255,255,255,0.5)',
+            opacity: isFirst && !showFullStrip ? 0.5 : 1,
           }}
           whileHover={{ scale: isFirst && !showFullStrip ? 1 : 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -255,17 +233,17 @@ export default function ComicReader() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={goNext}
-            aria-label={isLast ? "See full comic strip" : "Next panel"}
+            aria-label={isLast ? 'See full comic strip' : 'Next panel'}
           >
             {isLast ? '📖 See Full Strip →' : 'Next →'}
           </motion.button>
         )}
       </div>
 
-      {/* Panel dots */}
+      {/* Panel dot indicators */}
       {!showFullStrip && (
         <div className="flex gap-2" role="tablist" aria-label="Panel navigation">
-          {comicPanels.map((_, i) => (
+          {panelImages.map((_, i) => (
             <motion.button
               key={i}
               className="rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-white"
@@ -276,7 +254,10 @@ export default function ComicReader() {
               }}
               animate={{ width: i === currentPanel ? 20 : 8 }}
               transition={{ duration: 0.3 }}
-              onClick={() => { setDirection(i > currentPanel ? 1 : -1); dispatch({ type: 'SET_PANEL', panel: i }); }}
+              onClick={() => {
+                setDirection(i > currentPanel ? 1 : -1);
+                dispatch({ type: 'SET_PANEL', panel: i });
+              }}
               role="tab"
               aria-selected={i === currentPanel}
               aria-label={`Go to panel ${i + 1}`}

@@ -100,7 +100,7 @@ function TurtleSwimIn({ onNext }: { onNext: () => void }) {
           >
             {/* Speech bubble */}
             <motion.div
-              className="relative bg-white rounded-3xl px-8 py-5 shadow-2xl max-w-md text-center"
+              className="relative bg-white rounded-3xl px-12 py-7 shadow-2xl max-w-md text-center"
               style={{ border: '3px solid rgba(6,182,212,0.4)' }}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -224,7 +224,7 @@ function CharacterIntro({ onStart }: { onStart: () => void }) {
         transition={{ delay: 0.5 }}
         aria-label="Start the adventure"
       >
-        🚀 START ADVENTURE!
+        🚢 START ADVENTURE!
       </motion.button>
     </div>
   );

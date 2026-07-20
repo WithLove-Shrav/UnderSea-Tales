@@ -10,55 +10,99 @@ import TreasureChestSort from '../games/TreasureChestSort';
 import EmotionShellGame from '../games/EmotionShellGame';
 import comicStrip from '../../assets/comic-strip.png';
 
-function ComicSidebar() {
-  const [zoomed, setZoomed] = useState(false);
-
+// ─── Comic Zoom Modal ────────────────────────────────────────────────────────
+function ComicZoomModal({ onClose }: { onClose: () => void }) {
   return (
-    <div className="flex flex-col gap-2 h-full">
-      <div className="flex items-center justify-between">
-        <p className="text-xs font-bold text-white/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
-          📖 Refer back to the comic anytime!
-        </p>
-        <motion.button
-          className="text-xs px-2 py-1 rounded-full font-bold cursor-pointer"
-          style={{ fontFamily: 'Fredoka One, cursive', background: 'rgba(255,255,255,0.2)', color: 'white' }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setZoomed(z => !z)}
-          aria-label={zoomed ? 'Zoom out comic' : 'Zoom in comic'}
-        >
-          {zoomed ? '🔍 Zoom Out' : '🔍 Zoom In'}
-        </motion.button>
-      </div>
-
+    <motion.div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.75)' }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Comic strip zoomed view"
+    >
       <motion.div
-        className="rounded-2xl overflow-auto shadow-xl flex-1 cursor-zoom-in"
-        style={{
-          border: '3px solid rgba(255,255,255,0.4)',
-          maxHeight: 'calc(100vh - 200px)',
-        }}
-        animate={{ scale: zoomed ? 1.5 : 1 }}
-        transition={{ type: 'spring', stiffness: 200 }}
-        onClick={() => setZoomed(z => !z)}
-        role="button"
-        aria-label="Click to zoom comic"
-        tabIndex={0}
-        onKeyDown={e => e.key === 'Enter' && setZoomed(z => !z)}
+        className="relative max-w-4xl w-full"
+        initial={{ scale: 0.85, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.85, opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+        onClick={e => e.stopPropagation()}
       >
         <img
           src={comicStrip}
-          alt="Full comic strip: Undersea Tales — Shark tells the Crab about forgetting his wife's birthday, a cake that caught fire, and a golf putter package, while the Crab says 'Oh, well.'"
-          className="w-full h-auto block"
+          alt="Full comic strip zoomed in"
+          className="w-full h-auto rounded-2xl shadow-2xl"
+          style={{ border: '4px solid rgba(255,255,255,0.6)' }}
+        />
+        <motion.button
+          className="absolute -top-4 -right-4 w-10 h-10 rounded-full font-bold text-lg flex items-center justify-center cursor-pointer shadow-xl"
+          style={{ background: 'white', color: '#1e3a5f', border: '2px solid rgba(6,182,212,0.4)' }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={onClose}
+          aria-label="Close zoomed comic"
+        >
+          ✕
+        </motion.button>
+        <p className="text-center text-white/70 text-xs mt-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
+          Click outside or ✕ to close
+        </p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Comic Sidebar (thumbnail + click to zoom) ───────────────────────────────
+function ComicSidebar({ onZoom }: { onZoom: () => void }) {
+  return (
+    <div className="flex flex-col gap-2 h-full">
+      <p className="text-xs font-bold text-white/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
+        📖 Refer back to the comic anytime!
+      </p>
+
+      {/* Thumbnail — click to zoom */}
+      <motion.button
+        className="relative rounded-2xl overflow-hidden shadow-xl flex-1 cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-white/60 text-left"
+        style={{ border: '3px solid rgba(255,255,255,0.4)', minHeight: 0 }}
+        onClick={onZoom}
+        whileHover={{ scale: 1.02, borderColor: 'rgba(255,255,255,0.7)' }}
+        whileTap={{ scale: 0.98 }}
+        aria-label="Click to zoom the comic strip"
+      >
+        <img
+          src={comicStrip}
+          alt="Comic strip thumbnail — click to zoom"
+          className="w-full h-full object-contain"
           draggable={false}
         />
-      </motion.div>
-      <p className="text-xs text-white/50 text-center" style={{ fontFamily: 'Nunito, sans-serif' }}>
-        Tap to zoom · Scroll to explore
+        {/* Zoom hint overlay */}
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0)' }}
+          whileHover={{ background: 'rgba(0,0,0,0.18)' }}
+        >
+          <motion.div
+            className="rounded-full px-3 py-1 text-xs font-bold opacity-0"
+            style={{ fontFamily: 'Fredoka One, cursive', background: 'rgba(255,255,255,0.9)', color: '#1e3a5f' }}
+            whileHover={{ opacity: 1 }}
+          >
+            🔍 Click to zoom
+          </motion.div>
+        </motion.div>
+      </motion.button>
+
+      <p className="text-xs text-white/40 text-center" style={{ fontFamily: 'Nunito, sans-serif' }}>
+        Click to enlarge
       </p>
     </div>
   );
 }
 
+// ─── Feedback Bar ────────────────────────────────────────────────────────────
 function FeedbackBar({ message, type }: { message: string; type: 'wrong' | 'hint' }) {
   return (
     <motion.div
@@ -80,6 +124,7 @@ function FeedbackBar({ message, type }: { message: string; type: 'wrong' | 'hint
   );
 }
 
+// ─── Main Layout ─────────────────────────────────────────────────────────────
 export default function QuestionLayout() {
   const { state, dispatch } = useGame();
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -88,6 +133,7 @@ export default function QuestionLayout() {
   const [feedbackMsg, setFeedbackMsg] = useState<string | null>(null);
   const [feedbackType, setFeedbackType] = useState<'wrong' | 'hint'>('hint');
   const [questionKey, setQuestionKey] = useState(0);
+  const [showZoom, setShowZoom] = useState(false);
 
   const currentQ = state.currentQuestion;
   const question = questions[currentQ];
@@ -104,11 +150,9 @@ export default function QuestionLayout() {
     } else {
       setFeedbackMsg(question.wrongFeedback);
       setFeedbackType('wrong');
-      // Allow retry — reset selection after a moment
       setTimeout(() => {
         setSelectedId(null);
-        setFeedbackMsg(question.turtleTip || null);
-        setFeedbackType('hint');
+        setFeedbackMsg(null);
       }, 2000);
     }
   }, [currentQ, dispatch, question]);
@@ -139,16 +183,22 @@ export default function QuestionLayout() {
         onComplete={handleRewardComplete}
       />
 
+      {/* Comic Zoom Modal */}
+      <AnimatePresence>
+        {showZoom && <ComicZoomModal onClose={() => setShowZoom(false)} />}
+      </AnimatePresence>
+
       <div className="flex min-h-screen p-3 gap-3" style={{ maxHeight: '100dvh', overflow: 'hidden' }}>
+
         {/* LEFT — Comic sidebar */}
         <motion.div
           className="hidden md:flex flex-col"
-          style={{ width: 280, flexShrink: 0 }}
+          style={{ width: 260, flexShrink: 0 }}
           initial={{ x: -40, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <ComicSidebar />
+          <ComicSidebar onZoom={() => setShowZoom(true)} />
         </motion.div>
 
         {/* RIGHT — Question panel */}
@@ -160,7 +210,6 @@ export default function QuestionLayout() {
         >
           {/* Top HUD — Pearl collection */}
           <div className="glass-card rounded-2xl px-4 py-3 flex items-center gap-3 flex-wrap">
-            {/* Pearl badges */}
             <div className="flex gap-2 flex-1">
               {questions.map((q, i) => (
                 <PearlBadge
@@ -176,8 +225,6 @@ export default function QuestionLayout() {
                 />
               ))}
             </div>
-
-            {/* Progress label */}
             <div className="text-right">
               <p className="text-xs font-bold text-white" style={{ fontFamily: 'Fredoka One, cursive' }}>
                 Question {currentQ + 1} / 4
@@ -220,12 +267,19 @@ export default function QuestionLayout() {
 
           {/* Mobile comic strip toggle */}
           <details className="md:hidden">
-            <summary className="text-xs font-bold text-white/80 cursor-pointer px-2 py-1 rounded-xl" style={{ fontFamily: 'Nunito, sans-serif', background: 'rgba(255,255,255,0.1)' }}>
+            <summary
+              className="text-xs font-bold text-white/80 cursor-pointer px-3 py-2 rounded-xl"
+              style={{ fontFamily: 'Nunito, sans-serif', background: 'rgba(255,255,255,0.1)' }}
+            >
               📖 Show/Hide Comic Strip
             </summary>
-            <div className="mt-2 rounded-2xl overflow-hidden border-2 border-white/30">
+            <motion.button
+              className="mt-2 w-full rounded-2xl overflow-hidden border-2 border-white/30 cursor-zoom-in"
+              onClick={() => setShowZoom(true)}
+              aria-label="Tap to zoom comic strip"
+            >
               <img src={comicStrip} alt="Comic strip" className="w-full" />
-            </div>
+            </motion.button>
           </details>
 
           {/* Feedback bar */}
@@ -285,25 +339,6 @@ export default function QuestionLayout() {
               )}
             </motion.div>
           </AnimatePresence>
-
-          {/* Turtle tip (always visible) */}
-          <motion.div
-            className="flex items-start gap-3 rounded-2xl p-3"
-            style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <span className="text-2xl" aria-hidden="true">🐢</span>
-            <div>
-              <p className="text-xs font-bold text-white" style={{ fontFamily: 'Fredoka One, cursive' }}>
-                Tully's Tip:
-              </p>
-              <p className="text-xs text-white/80" style={{ fontFamily: 'Nunito, sans-serif' }}>
-                {question.turtleTip || "Read the comic carefully and trust your instincts!"}
-              </p>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </>
