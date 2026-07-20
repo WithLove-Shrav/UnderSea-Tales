@@ -38,7 +38,7 @@ export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGra
     <AnimatePresence>
       {show && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+          className="fixed inset-0 z-50 flex items-center justify-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
