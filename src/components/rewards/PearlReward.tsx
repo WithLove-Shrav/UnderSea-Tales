@@ -63,7 +63,7 @@ export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGra
 
           {/* Pearl burst card */}
           <motion.div
-            className="relative z-10 flex flex-col items-center gap-4 px-10 py-8 rounded-3xl text-center"
+            className="relative z-10 flex flex-col items-center gap-4 px-8 md:px-12 py-8 rounded-3xl text-center w-[92%] max-w-xl md:max-w-2xl mx-auto"
             style={{
               background: 'rgba(255,255,255,0.95)',
               border: `3px solid ${mainColor}`,
@@ -106,9 +106,9 @@ export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGra
               aria-hidden="true"
             />
 
-            <div>
+            <div className="w-full px-2 md:px-6">
               <motion.h2
-                className="text-2xl font-bold mb-1"
+                className="text-2xl font-bold mb-2"
                 style={{ fontFamily: 'Fredoka One, cursive', color: '#1e3a5f' }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ export default function PearlReward({ show, pearlColor, pearlGradient: _pearlGra
                 {isSuccess ? `✨ ${pearlName} Collected! ✨` : 'Wrong Answer!'}
               </motion.h2>
               <motion.p
-                className="text-base font-semibold"
+                className="text-base font-semibold leading-relaxed"
                 style={{ fontFamily: 'Nunito, sans-serif', color: '#475569' }}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
