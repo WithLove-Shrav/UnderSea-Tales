@@ -51,26 +51,79 @@ function SunRay({ angle, left }: { angle: number; left: string }) {
   );
 }
 
-// Minimalist background creature
-function SwimmingCreature({ emoji, top, delay, duration, direction, scale }: { emoji: string; top: string; delay: number; duration: number; direction: 1 | -1; scale: number }) {
+type Behaviour = 'wiggle' | 'jump' | 'pulse' | 'scuttle' | 'dart' | 'drift';
+
+interface CreatureProps {
+  emoji: string;
+  top: string;
+  delay: number;
+  duration: number;
+  direction: 1 | -1;
+  scale: number;
+  behaviour: Behaviour;
+}
+
+function SwimmingCreature({ emoji, top, delay, duration, direction, behaviour }: CreatureProps) {
+  // Each behaviour gets its own y + rotate keyframe signature
+  const yAnim: Record<Behaviour, number[]> = {
+    wiggle: [0, -10, 0, 10, 0],            // gentle swim wave
+    jump:   [0, -60, -80, -60, 0, 0, 0],   // dolphin leap
+    pulse:  [0, -8, 0, -8, 0],             // octopus drift with pulse
+    scuttle:[0, -4, 0, -4, 0],             // crab scuttle stays low
+    dart:   [0, -20, -20, 0, 0],           // squid dart and glide
+    drift:  [0, -20, 0, 20, 0],            // whale slow drift
+  };
+
+  const rotateAnim: Record<Behaviour, number[]> = {
+    wiggle:  [0, 8, 0, -8, 0],             // fish wags body
+    jump:    [0, -20, 0, 20, 0, 0, 0],     // dolphin rotation through leap
+    pulse:   [0, 0, 0, 0, 0],
+    scuttle: [0, 5, -5, 5, 0],             // crab tips side to side
+    dart:    [-10, 0, 0, 10, 0],           // squid tilts on burst
+    drift:   [0, 3, 0, -3, 0],             // whale gentle list
+  };
+
+  const scaleAnim: Record<Behaviour, number[]> = {
+    wiggle:  [1, 1, 1, 1, 1],
+    jump:    [1, 1.1, 1.2, 1.1, 1, 1, 1],  // dolphin grows at peak
+    pulse:   [1, 1.15, 0.9, 1.1, 1],        // octopus contracts/expands
+    scuttle: [1, 1, 1, 1, 1],
+    dart:    [1, 1.1, 1, 0.95, 1],
+    drift:   [1, 1.02, 1, 0.98, 1],
+  };
+
+  const yDuration: Record<Behaviour, number> = {
+    wiggle: 2.0,
+    jump:   4.5,
+    pulse:  1.8,
+    scuttle:1.2,
+    dart:   2.5,
+    drift:  8.0,
+  };
+
   return (
     <motion.div
-      className="absolute pointer-events-none drop-shadow-sm select-none"
+      className="absolute pointer-events-none select-none"
       style={{
         top,
         fontSize: '3rem',
-        opacity: 0.35,
-        transform: `scaleX(${direction}) scale(${scale})`,
-        zIndex: 20, // above content (z-10), but still subtle
+        opacity: 0.38,
+        zIndex: 20,
+        // flip direction; rotate added via animate below so we use originX/Y
+        transformOrigin: 'center center',
       }}
-      initial={{ left: direction === 1 ? '-20%' : '120%' }}
+      initial={{ left: direction === 1 ? '-15%' : '115%', scaleX: direction }}
       animate={{
-        left: direction === 1 ? '110%' : '-10%',
-        y: [0, -15, 0, 15, 0], // Gentle bobbing
+        left: direction === 1 ? '115%' : '-15%',
+        y: yAnim[behaviour],
+        rotate: rotateAnim[behaviour].map(r => r * direction), // mirror for left-facing creatures
+        scale: scaleAnim[behaviour],
       }}
       transition={{
         left: { duration, delay, repeat: Infinity, ease: 'linear' },
-        y: { duration: 6, repeat: Infinity, ease: 'easeInOut' }
+        y: { duration: yDuration[behaviour], repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' },
+        rotate: { duration: yDuration[behaviour], repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' },
+        scale: { duration: yDuration[behaviour] * (behaviour === 'pulse' ? 1 : 1), repeat: Infinity, ease: 'easeInOut', repeatType: 'mirror' },
       }}
       aria-hidden="true"
     >
@@ -78,8 +131,6 @@ function SwimmingCreature({ emoji, top, delay, duration, direction, scale }: { e
     </motion.div>
   );
 }
-
-// Simplified premium background — no cartoons
 
 export default function OceanBackground({ children }: { children?: React.ReactNode }) {
 
@@ -90,8 +141,6 @@ export default function OceanBackground({ children }: { children?: React.ReactNo
     duration: 8 + Math.random() * 10,
   }));
 
-
-
   const sunRays = [
     { angle: -15, left: '15%' },
     { angle: -5, left: '30%' },
@@ -100,23 +149,23 @@ export default function OceanBackground({ children }: { children?: React.ReactNo
     { angle: -8, left: '70%' },
   ];
 
-  const creatures = [
-    { emoji: '🐟', top: '15%', delay: 0, duration: 45, direction: 1 as const, scale: 0.8 },
-    { emoji: '🐠', top: '40%', delay: 15, duration: 55, direction: -1 as const, scale: 0.9 },
-    { emoji: '🐢', top: '75%', delay: 5, duration: 80, direction: 1 as const, scale: 1.2 },
-    { emoji: '🦑', top: '60%', delay: 25, duration: 60, direction: -1 as const, scale: 0.7 },
-    { emoji: '🐡', top: '30%', delay: 35, duration: 50, direction: 1 as const, scale: 0.85 },
-    { emoji: '🐳', top: '80%', delay: 45, duration: 90, direction: -1 as const, scale: 1.5 },
-    { emoji: '🦀', top: '90%', delay: 10, duration: 70, direction: 1 as const, scale: 0.6 },
-    { emoji: '🐙', top: '50%', delay: 50, duration: 65, direction: 1 as const, scale: 0.9 },
-    { emoji: '🐬', top: '25%', delay: 20, duration: 40, direction: -1 as const, scale: 1.1 },
+  const creatures: CreatureProps[] = [
+    { emoji: '🐟', top: '15%', delay: 0,  duration: 38, direction:  1, scale: 0.8, behaviour: 'wiggle'  },
+    { emoji: '🐠', top: '40%', delay: 12, duration: 50, direction: -1, scale: 0.9, behaviour: 'wiggle'  },
+    { emoji: '🐢', top: '70%', delay: 5,  duration: 75, direction:  1, scale: 1.2, behaviour: 'drift'   },
+    { emoji: '🦑', top: '55%', delay: 22, duration: 42, direction: -1, scale: 0.7, behaviour: 'dart'    },
+    { emoji: '🐡', top: '30%', delay: 30, duration: 48, direction:  1, scale: 0.85,behaviour: 'wiggle'  },
+    { emoji: '🐳', top: '82%', delay: 40, duration: 90, direction: -1, scale: 1.4, behaviour: 'drift'   },
+    { emoji: '🦀', top: '88%', delay: 8,  duration: 55, direction:  1, scale: 0.7, behaviour: 'scuttle' },
+    { emoji: '🐙', top: '50%', delay: 45, duration: 60, direction:  1, scale: 0.9, behaviour: 'pulse'   },
+    { emoji: '🐬', top: '22%', delay: 18, duration: 36, direction: -1, scale: 1.1, behaviour: 'jump'    },
   ];
 
   return (
     <div
       className="fixed inset-0 overflow-hidden"
       style={{
-        background: 'linear-gradient(180deg, #bae6fd 0%, #0ea5e9 100%)', // Light, airy, premium blue gradient
+        background: 'linear-gradient(180deg, #bae6fd 0%, #0ea5e9 100%)',
       }}
       role="presentation"
       aria-hidden="true"
@@ -135,7 +184,7 @@ export default function OceanBackground({ children }: { children?: React.ReactNo
         {children}
       </div>
 
-      {/* Minimal background creatures — rendered ABOVE content so they show on all pages */}
+      {/* Lively background creatures — rendered ABOVE content so they show on all pages */}
       {creatures.map((c, i) => <SwimmingCreature key={`creature-${i}`} {...c} />)}
     </div>
   );
