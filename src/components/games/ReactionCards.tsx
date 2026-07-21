@@ -33,11 +33,11 @@ export default function ReactionCards({ options, questionText, contextText, onAn
       </motion.div>
 
       {/* Wife reaction list */}
-      <div className="flex flex-col gap-4 max-w-2xl mx-auto w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto w-full">
         {options.map((option, i) => (
           <motion.button
             key={option.id}
-            className="w-full text-left cursor-pointer focus:outline-none flex items-center gap-6 p-3 rounded-2xl transition-colors relative"
+            className="w-full text-left cursor-pointer focus:outline-none flex items-center gap-5 p-4 rounded-3xl transition-colors relative"
             style={{
               background: answered && option.isCorrect
                 ? 'rgba(134, 239, 172, 0.2)'
@@ -58,18 +58,18 @@ export default function ReactionCards({ options, questionText, contextText, onAn
             aria-pressed={selectedId === option.id}
           >
             {/* Reaction Image */}
-            <div className="flex-shrink-0 flex items-center justify-center w-24 h-24 bg-white/50 rounded-full shadow-sm">
+            <div className="flex-shrink-0 flex items-center justify-center w-28 h-28 md:w-32 md:h-32 bg-white/50 rounded-full shadow-sm">
               {option.image ? (
                 <motion.img
                   src={option.image}
                   alt={option.feeling}
-                  className="w-20 h-20 object-contain"
+                  className="w-24 h-24 md:w-28 md:h-28 object-contain"
                   animate={answered && option.isCorrect ? { scale: [1, 1.2, 1], rotate: [0, 8, -8, 0] } : hoveredId === option.id && !answered ? { scale: 1.1 } : {}}
                   transition={{ duration: 0.4 }}
                 />
               ) : (
                 <motion.div
-                  className="text-4xl"
+                  className="text-5xl md:text-6xl"
                   animate={answered && option.isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : hoveredId === option.id && !answered ? { scale: 1.1 } : {}}
                   transition={{ duration: 0.4 }}
                   aria-hidden="true"
@@ -80,7 +80,7 @@ export default function ReactionCards({ options, questionText, contextText, onAn
             </div>
 
             {/* Text Content */}
-            <div className="flex-1 flex flex-col justify-center">
+            <div className="flex-1 flex flex-col justify-center py-2">
               <div
                 className="text-lg font-bold mb-1 flex items-center gap-2"
                 style={{ color: '#1e3a5f', fontFamily: 'Fredoka One, cursive' }}
