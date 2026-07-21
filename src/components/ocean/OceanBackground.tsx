@@ -51,6 +51,34 @@ function SunRay({ angle, left }: { angle: number; left: string }) {
   );
 }
 
+// Minimalist background creature
+function SwimmingCreature({ emoji, top, delay, duration, direction, scale }: { emoji: string; top: string; delay: number; duration: number; direction: 1 | -1; scale: number }) {
+  return (
+    <motion.div
+      className="absolute pointer-events-none drop-shadow-sm select-none"
+      style={{
+        top,
+        fontSize: '2rem',
+        filter: 'blur(1.5px) grayscale(20%) opacity(0.2)', // Very subtle, neat, and minimal
+        transform: `scaleX(${direction}) scale(${scale})`,
+        zIndex: 0,
+      }}
+      initial={{ left: direction === 1 ? '-10%' : '110%' }}
+      animate={{
+        left: direction === 1 ? '110%' : '-10%',
+        y: [0, -15, 0, 15, 0], // Gentle bobbing
+      }}
+      transition={{
+        left: { duration, delay, repeat: Infinity, ease: 'linear' },
+        y: { duration: 6, repeat: Infinity, ease: 'easeInOut' }
+      }}
+      aria-hidden="true"
+    >
+      {emoji}
+    </motion.div>
+  );
+}
+
 // Simplified premium background — no cartoons
 
 export default function OceanBackground({ children }: { children?: React.ReactNode }) {
@@ -72,6 +100,14 @@ export default function OceanBackground({ children }: { children?: React.ReactNo
     { angle: -8, left: '70%' },
   ];
 
+  const creatures = [
+    { emoji: '🐟', top: '20%', delay: 0, duration: 45, direction: 1 as const, scale: 0.8 },
+    { emoji: '🐠', top: '45%', delay: 15, duration: 55, direction: -1 as const, scale: 0.9 },
+    { emoji: '🐢', top: '75%', delay: 5, duration: 80, direction: 1 as const, scale: 1.2 },
+    { emoji: '🦑', top: '60%', delay: 25, duration: 60, direction: -1 as const, scale: 0.7 },
+    { emoji: '🐡', top: '35%', delay: 35, duration: 50, direction: 1 as const, scale: 0.85 },
+  ];
+
   return (
     <div
       className="fixed inset-0 overflow-hidden"
@@ -89,6 +125,9 @@ export default function OceanBackground({ children }: { children?: React.ReactNo
 
       {/* Subtle slow bubbles */}
       {bubbles.map((b, i) => <Bubble key={i} {...b} />)}
+
+      {/* Minimal background creatures */}
+      {creatures.map((c, i) => <SwimmingCreature key={`creature-${i}`} {...c} />)}
 
       {/* Page content layer */}
       <div className="relative z-10 w-full h-full overflow-auto">
