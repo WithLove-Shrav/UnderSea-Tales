@@ -113,6 +113,7 @@ function FeedbackBar({ message, type }: { message: string; type: 'wrong' | 'hint
     <motion.div
       className="mt-12 md:mt-16 rounded-2xl px-6 py-4 text-sm md:text-base font-semibold shadow-sm text-center flex items-center justify-center"
       style={{
+        marginTop: '2.5rem',
         fontFamily: 'Nunito, sans-serif',
         background: type === 'wrong' ? 'rgba(254,226,226,0.95)' : 'rgba(255,255,255,0.9)',
         border: type === 'wrong' ? '1px solid #fca5a5' : '1px solid rgba(255,255,255,0.8)',
