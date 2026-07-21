@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { QuestionOption } from '../../data/questions';
 
 interface TreasureDecoderProps {
@@ -9,21 +9,6 @@ interface TreasureDecoderProps {
   onAnswer: (isCorrect: boolean, optionId: string) => void;
   answered: boolean;
   selectedId: string | null;
-}
-
-// Decorative undersea element
-function SeaFloorDecor() {
-  return (
-    <div className="flex items-end justify-center gap-4 py-3 pointer-events-none select-none" aria-hidden="true">
-      <span className="text-3xl" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,100,150,0.3))' }}>🌿</span>
-      <span className="text-2xl" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,100,150,0.3))' }}>🐚</span>
-      <span className="text-3xl" style={{ transform: 'scaleX(-1)', filter: 'drop-shadow(0 2px 4px rgba(0,100,150,0.3))' }}>🌿</span>
-      <span className="text-2xl" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,100,150,0.3))' }}>⭐</span>
-      <span className="text-3xl" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,100,150,0.3))' }}>🌿</span>
-      <span className="text-2xl" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,100,150,0.3))' }}>🪸</span>
-      <span className="text-3xl" style={{ transform: 'scaleX(-1)', filter: 'drop-shadow(0 2px 4px rgba(0,100,150,0.3))' }}>🌿</span>
-    </div>
-  );
 }
 
 export default function TreasureDecoder({
@@ -45,7 +30,7 @@ export default function TreasureDecoder({
 
       {/* Question Stem */}
       <motion.div
-        className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 w-full mb-2"
+        className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 w-full"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -54,18 +39,49 @@ export default function TreasureDecoder({
         </p>
       </motion.div>
 
-      {/* Undersea decorative strip */}
+      {/* Octopus character panel — mirrors the crab panel in Q1 */}
       <motion.div
-        className="w-full rounded-2xl overflow-hidden"
-        style={{
-          background: 'linear-gradient(180deg, rgba(14,165,233,0.15) 0%, rgba(3,105,161,0.2) 100%)',
-          border: '1px solid rgba(56,189,248,0.25)',
-        }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15 }}
+        className="relative flex items-start gap-6 bg-white/90 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 w-full"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.1, duration: 0.4 }}
       >
-        <SeaFloorDecor />
+        <div className="text-5xl select-none" aria-hidden="true">🐙</div>
+        <div className="flex-1">
+          <AnimatePresence mode="wait">
+            {selectedId && answered ? (
+              <motion.div
+                key="answered"
+                className="rounded-2xl px-6 py-4 relative"
+                style={{
+                  background: options.find(o => o.id === selectedId)?.isCorrect
+                    ? '#dcfce7'
+                    : '#fee2e2',
+                  border: `1px solid ${options.find(o => o.id === selectedId)?.isCorrect ? '#86efac' : '#fca5a5'}`,
+                }}
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              >
+                <p className="text-sm md:text-base font-semibold" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e293b' }}>
+                  {options.find(o => o.id === selectedId)?.text}
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="empty"
+                className="border-2 border-dashed border-slate-300 rounded-2xl px-6 py-5 text-center"
+                style={{ background: 'rgba(248,250,252,0.6)', minHeight: 60 }}
+                animate={{ opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 3, repeat: Infinity }}
+              >
+                <p className="text-sm font-medium text-slate-500" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                  💬 Tap an option below to match the meaning
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </motion.div>
 
       {/* Options — ocean bubble style */}
