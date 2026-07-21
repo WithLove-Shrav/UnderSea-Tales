@@ -296,6 +296,7 @@ export default function QuestionLayout() {
                   onAnswer={handleAnswer}
                   answered={answered}
                   selectedId={selectedId}
+                  attempts={attempts}
                 />
               )}
               {question.gameType === 'reaction-cards' && (
@@ -336,6 +337,7 @@ export default function QuestionLayout() {
                   onAnswer={handleAnswer}
                   answered={answered}
                   selectedId={selectedId}
+                  attempts={attempts}
                 />
               )}
               {question.gameType === 'mood-compass' && (
