@@ -50,7 +50,7 @@ export default function TreasureDecoder({
         <img
           src={crabImg}
           alt="Crab character"
-          className="w-24 h-24 md:w-28 md:h-28 object-contain select-none flex-shrink-0"
+          className="w-32 h-32 md:w-40 md:h-40 object-contain select-none flex-shrink-0"
           aria-hidden="true"
         />
         <div className="flex-1">
