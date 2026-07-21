@@ -13,25 +13,22 @@ interface SpeechBubbleChoiceProps {
   attempts?: number;
 }
 
-
 export default function SpeechBubbleChoice({ options, questionText, onAnswer, answered, selectedId, attempts = 0 }: SpeechBubbleChoiceProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [poppingId, setPoppingId] = useState<string | null>(null);
+  // poppedId is NEVER cleared — keeps the button hidden after pop so it can't reappear
+  const [poppedId, setPoppedId] = useState<string | null>(null);
 
   const handleSelect = useCallback((option: QuestionOption) => {
-    if (answered || poppingId) return;
+    if (answered || poppedId) return;
 
     const isFinal = option.isCorrect || attempts >= 1;
     if (isFinal) {
-      setPoppingId(option.id);
-      setTimeout(() => {
-        setPoppingId(null);
-        onAnswer(option.isCorrect, option.id);
-      }, 420); // pop plays in ~380ms, fire onAnswer just after
+      setPoppedId(option.id);  // hide button instantly, start pop overlay
+      setTimeout(() => onAnswer(option.isCorrect, option.id), 80);
     } else {
       onAnswer(option.isCorrect, option.id);
     }
-  }, [answered, poppingId, attempts, onAnswer]);
+  }, [answered, poppedId, attempts, onAnswer]);
 
   return (
     <div className="flex flex-col gap-5 w-full">
@@ -66,9 +63,7 @@ export default function SpeechBubbleChoice({ options, questionText, onAnswer, an
                 key="answered"
                 className="rounded-2xl px-6 py-4 relative"
                 style={{
-                  background: options.find(o => o.id === selectedId)?.isCorrect
-                    ? '#dcfce7'
-                    : '#fee2e2',
+                  background: options.find(o => o.id === selectedId)?.isCorrect ? '#dcfce7' : '#fee2e2',
                   border: `1px solid ${options.find(o => o.id === selectedId)?.isCorrect ? '#86efac' : '#fca5a5'}`,
                 }}
                 initial={{ scale: 0.85, opacity: 0 }}
@@ -99,89 +94,91 @@ export default function SpeechBubbleChoice({ options, questionText, onAnswer, an
       {/* Options — ocean bubble style */}
       <div className="grid grid-cols-1 gap-3">
         {options.map((option, i) => {
-          const isPopping = poppingId === option.id;
-          const isCorrect = option.isCorrect;
+          const isPopped       = poppedId === option.id;
+          const isCorrect      = option.isCorrect;
           const isWrongSelected = answered && selectedId === option.id && !isCorrect;
 
           return (
-            <motion.button
-              key={option.id}
-              className="w-full text-left rounded-full px-7 py-4 font-semibold text-sm md:text-base cursor-pointer relative overflow-visible focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1"
-              style={{
-                fontFamily: 'Nunito, sans-serif',
-                background: answered && isCorrect
-                  ? 'linear-gradient(135deg, rgba(134,239,172,0.9), rgba(74,222,128,0.7))'
-                  : isWrongSelected
-                  ? 'linear-gradient(135deg, rgba(252,165,165,0.9), rgba(248,113,113,0.7))'
-                  : hoveredId === option.id
-                  ? 'linear-gradient(135deg, rgba(186,230,253,0.9), rgba(125,211,252,0.8))'
-                  : 'linear-gradient(135deg, rgba(255,255,255,0.85), rgba(224,242,254,0.75))',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: answered && isCorrect
-                  ? '1.5px solid rgba(74,222,128,0.8)'
-                  : isWrongSelected
-                  ? '1.5px solid rgba(248,113,113,0.8)'
-                  : hoveredId === option.id
-                  ? '1.5px solid rgba(56,189,248,0.8)'
-                  : '1.5px solid rgba(186,230,253,0.6)',
-                color: '#1e3a5f',
-                boxShadow: answered && isCorrect
-                  ? '0 4px 20px rgba(74,222,128,0.35), inset 0 1px 0 rgba(255,255,255,0.6)'
-                  : isWrongSelected
-                  ? '0 4px 20px rgba(248,113,113,0.3), inset 0 1px 0 rgba(255,255,255,0.4)'
-                  : '0 4px 16px rgba(14,165,233,0.15), inset 0 1px 0 rgba(255,255,255,0.7)',
-              }}
-              animate={{
-                opacity: isPopping ? [1, 0] : (answered && !isCorrect && selectedId !== option.id ? 0.35 : 1),
-                y: 0,
-                scale: isPopping ? [1, 1.12, 0.0] : 1,
-              }}
-              transition={
-                isPopping
-                  ? {
-                      scale:   { duration: 0.20, times: [0, 0.15, 1], ease: [0.6, 0, 1, 1] },
-                      opacity: { duration: 0.12, delay: 0.08 },
-                    }
-                  : { delay: i * 0.06, duration: 0.35, type: 'spring', stiffness: 260, damping: 22 }
-              }
-              whileHover={!answered && !poppingId ? { scale: 1.015, y: -1 } : {}}
-              whileTap={!answered && !poppingId ? { scale: 0.98 } : {}}
-              onClick={() => handleSelect(option)}
-              onHoverStart={() => !answered && !poppingId && setHoveredId(option.id)}
-              onHoverEnd={() => setHoveredId(null)}
-              disabled={answered || !!poppingId}
-              aria-label={`Option ${option.id}: ${option.text}`}
-              aria-pressed={selectedId === option.id}
-            >
-              {/* Bubble shine glare */}
-              <div className="absolute top-0 left-4 right-4 h-px bg-white/70 pointer-events-none" />
-              <div className="absolute top-1 left-6 w-8 h-2 rounded-full bg-white/40 pointer-events-none" style={{ filter: 'blur(3px)' }} />
+            // Wrapper div preserves layout height even when button is visibility:hidden
+            <div key={option.id} className="relative">
+              <motion.button
+                className="w-full text-left rounded-full px-7 py-4 font-semibold text-sm md:text-base cursor-pointer relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1"
+                style={{
+                  fontFamily: 'Nunito, sans-serif',
+                  // visibility:hidden keeps layout space but makes the element invisible
+                  // — crucially, Framer Motion can't "reappear" it because CSS visibility
+                  // is outside the motion value system
+                  visibility: isPopped ? 'hidden' : 'visible',
+                  background: answered && isCorrect
+                    ? 'linear-gradient(135deg, rgba(134,239,172,0.9), rgba(74,222,128,0.7))'
+                    : isWrongSelected
+                    ? 'linear-gradient(135deg, rgba(252,165,165,0.9), rgba(248,113,113,0.7))'
+                    : hoveredId === option.id
+                    ? 'linear-gradient(135deg, rgba(186,230,253,0.9), rgba(125,211,252,0.8))'
+                    : 'linear-gradient(135deg, rgba(255,255,255,0.85), rgba(224,242,254,0.75))',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: answered && isCorrect
+                    ? '1.5px solid rgba(74,222,128,0.8)'
+                    : isWrongSelected
+                    ? '1.5px solid rgba(248,113,113,0.8)'
+                    : hoveredId === option.id
+                    ? '1.5px solid rgba(56,189,248,0.8)'
+                    : '1.5px solid rgba(186,230,253,0.6)',
+                  color: '#1e3a5f',
+                  boxShadow: answered && isCorrect
+                    ? '0 4px 20px rgba(74,222,128,0.35), inset 0 1px 0 rgba(255,255,255,0.6)'
+                    : isWrongSelected
+                    ? '0 4px 20px rgba(248,113,113,0.3), inset 0 1px 0 rgba(255,255,255,0.4)'
+                    : '0 4px 16px rgba(14,165,233,0.15), inset 0 1px 0 rgba(255,255,255,0.7)',
+                }}
+                initial={{ opacity: 0, y: 12, scale: 0.97 }}
+                animate={{
+                  opacity: answered && !isCorrect && selectedId !== option.id ? 0.35 : 1,
+                  y: 0,
+                  scale: 1,
+                }}
+                transition={{ delay: i * 0.06, duration: 0.35, type: 'spring', stiffness: 260, damping: 22 }}
+                whileHover={!answered && !poppedId ? { scale: 1.015, y: -1 } : {}}
+                whileTap={!answered && !poppedId ? { scale: 0.98 } : {}}
+                onClick={() => handleSelect(option)}
+                onHoverStart={() => !answered && !poppedId && setHoveredId(option.id)}
+                onHoverEnd={() => setHoveredId(null)}
+                disabled={answered || !!poppedId}
+                aria-label={`Option ${option.id}: ${option.text}`}
+                aria-pressed={selectedId === option.id}
+              >
+                {/* Bubble shine glare */}
+                <div className="absolute top-0 left-4 right-4 h-px bg-white/70 pointer-events-none" />
+                <div className="absolute top-1 left-6 w-8 h-2 rounded-full bg-white/40 pointer-events-none" style={{ filter: 'blur(3px)' }} />
 
-              {/* Pop effect */}
-              <AnimatePresence>
-                {isPopping && <BubblePop key="pop" variant={isCorrect ? 'correct' : 'wrong'} />}
-              </AnimatePresence>
-
-              <div className="flex items-center gap-3 relative z-10">
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0"
-                  style={{
-                    background: answered && isCorrect
-                      ? 'rgba(21,128,61,0.8)'
-                      : isWrongSelected
-                      ? 'rgba(185,28,28,0.8)'
-                      : 'rgba(14,165,233,0.25)',
-                    color: answered && (isCorrect || isWrongSelected) ? 'white' : '#0369a1',
-                    fontFamily: 'Fredoka One, cursive',
-                    border: '1px solid rgba(255,255,255,0.5)',
-                  }}
-                >
-                  {answered && isCorrect ? '✓' : isWrongSelected ? '✗' : option.id}
+                <div className="flex items-center gap-3 relative z-10">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs flex-shrink-0"
+                    style={{
+                      background: answered && isCorrect
+                        ? 'rgba(21,128,61,0.8)'
+                        : isWrongSelected
+                        ? 'rgba(185,28,28,0.8)'
+                        : 'rgba(14,165,233,0.25)',
+                      color: answered && (isCorrect || isWrongSelected) ? 'white' : '#0369a1',
+                      fontFamily: 'Fredoka One, cursive',
+                      border: '1px solid rgba(255,255,255,0.5)',
+                    }}
+                  >
+                    {answered && isCorrect ? '✓' : isWrongSelected ? '✗' : option.id}
+                  </div>
+                  <span className="leading-snug">{option.text}</span>
                 </div>
-                <span className="leading-snug">{option.text}</span>
-              </div>
-            </motion.button>
+              </motion.button>
+
+              {/* Pop effect — sibling div, absolutely centered on the button, can overflow freely */}
+              <AnimatePresence>
+                {isPopped && (
+                  <BubblePop key="pop" variant={isCorrect ? 'correct' : 'wrong'} />
+                )}
+              </AnimatePresence>
+            </div>
           );
         })}
       </div>
