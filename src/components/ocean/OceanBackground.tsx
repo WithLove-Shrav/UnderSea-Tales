@@ -58,10 +58,10 @@ function SwimmingCreature({ emoji, top, delay, duration, direction, scale }: { e
       className="absolute pointer-events-none drop-shadow-sm select-none"
       style={{
         top,
-        fontSize: '3rem', // Increased size
-        opacity: 0.4, // Standard opacity property
+        fontSize: '3rem',
+        opacity: 0.35,
         transform: `scaleX(${direction}) scale(${scale})`,
-        zIndex: 1,
+        zIndex: 20, // above content (z-10), but still subtle
       }}
       initial={{ left: direction === 1 ? '-20%' : '120%' }}
       animate={{
@@ -130,13 +130,13 @@ export default function OceanBackground({ children }: { children?: React.ReactNo
       {/* Subtle slow bubbles */}
       {bubbles.map((b, i) => <Bubble key={i} {...b} />)}
 
-      {/* Minimal background creatures */}
-      {creatures.map((c, i) => <SwimmingCreature key={`creature-${i}`} {...c} />)}
-
       {/* Page content layer */}
       <div className="relative z-10 w-full h-full overflow-auto">
         {children}
       </div>
+
+      {/* Minimal background creatures — rendered ABOVE content so they show on all pages */}
+      {creatures.map((c, i) => <SwimmingCreature key={`creature-${i}`} {...c} />)}
     </div>
   );
 }
