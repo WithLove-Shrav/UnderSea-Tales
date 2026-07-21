@@ -33,7 +33,7 @@ export default function ReactionCards({ options, questionText, contextText, onAn
       </motion.div>
 
       {/* Wife reaction list */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto w-full mt-4 md:mt-6">
         {options.map((option, i) => (
           <motion.button
             key={option.id}
@@ -58,7 +58,7 @@ export default function ReactionCards({ options, questionText, contextText, onAn
             aria-pressed={selectedId === option.id}
           >
             {/* Reaction Image */}
-            <div className="flex-shrink-0 flex items-center justify-center w-28 h-28 md:w-32 md:h-32 bg-white/50 rounded-full shadow-sm">
+            <div className="flex-shrink-0 flex items-center justify-center w-28 h-28 md:w-32 md:h-32 bg-white/50 rounded-2xl shadow-sm border border-slate-100">
               {option.image ? (
                 <motion.img
                   src={option.image}
