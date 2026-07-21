@@ -42,7 +42,7 @@ export default function TreasureDecoder({
 
       {/* Crab character panel */}
       <motion.div
-        className="relative flex items-start gap-6 bg-white/90 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 w-full"
+        className="relative flex items-center gap-6 bg-white/90 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200 w-full"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.1, duration: 0.4 }}
