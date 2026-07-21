@@ -78,9 +78,9 @@ export default function TreasureDecoder({
           >
             {/* Speech Bubble Tail */}
             <div 
-              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 transform rotate-45"
+              className="absolute top-1/2 -translate-y-1/2 w-6 h-6 transform rotate-45"
               style={{
-                left: '-7px',
+                left: '-11px',
                 background: answered && option.isCorrect
                   ? '#dcfce7'
                   : answered && selectedId === option.id && !option.isCorrect
@@ -103,7 +103,7 @@ export default function TreasureDecoder({
                 borderTop: 'none',
                 borderRight: 'none',
                 zIndex: -1,
-                borderRadius: '0 0 0 3px',
+                borderRadius: '0 0 0 4px',
               }}
             />
             <div className="flex items-center gap-3 relative z-10">

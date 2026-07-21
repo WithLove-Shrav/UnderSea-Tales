@@ -58,12 +58,12 @@ function SwimmingCreature({ emoji, top, delay, duration, direction, scale }: { e
       className="absolute pointer-events-none drop-shadow-sm select-none"
       style={{
         top,
-        fontSize: '2rem',
-        filter: 'blur(1.5px) grayscale(20%) opacity(0.2)', // Very subtle, neat, and minimal
+        fontSize: '3rem', // Increased size
+        opacity: 0.4, // Standard opacity property
         transform: `scaleX(${direction}) scale(${scale})`,
-        zIndex: 0,
+        zIndex: 1,
       }}
-      initial={{ left: direction === 1 ? '-10%' : '110%' }}
+      initial={{ left: direction === 1 ? '-20%' : '120%' }}
       animate={{
         left: direction === 1 ? '110%' : '-10%',
         y: [0, -15, 0, 15, 0], // Gentle bobbing
