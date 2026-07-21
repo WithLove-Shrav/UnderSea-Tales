@@ -358,7 +358,7 @@ export default function QuestionLayout() {
 
           {/* Pearl title card */}
           <motion.div
-            className="rounded-2xl px-6 py-5 flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-white shadow-sm mt-auto mb-6 md:mb-10 shrink-0"
+            className="rounded-2xl px-6 py-5 flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-white shadow-sm mt-auto shrink-0"
             key={`pearl-${currentQ}`}
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -381,6 +381,9 @@ export default function QuestionLayout() {
               </p>
             </div>
           </motion.div>
+
+          {/* Spacer to ensure the scroll container has room at the bottom */}
+          <div className="h-6 md:h-8 shrink-0" aria-hidden="true" />
         </motion.div>
       </div>
     </>
