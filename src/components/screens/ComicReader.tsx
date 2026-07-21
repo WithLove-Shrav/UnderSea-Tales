@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../../context/GameContext';
 import comicStrip from '../../assets/comic-strip.png';
+import Glossary from '../ui/Glossary';
 
 // Import individual panel images
 import panel1 from '../../assets/1_block.png';
@@ -23,6 +24,7 @@ const TOTAL_PANELS = panelImages.length;
 // Single panel displayed as a square block
 function PanelView({ panelIndex }: { panelIndex: number }) {
   return (
+    <div className="flex flex-col gap-2 w-full">
     <div
       className="relative rounded-2xl overflow-hidden shadow-2xl w-full"
       style={{ aspectRatio: '1 / 1' }}
@@ -42,19 +44,24 @@ function PanelView({ panelIndex }: { panelIndex: number }) {
         {panelLabels[panelIndex]}
       </div>
     </div>
+    {panelIndex === 4 && <Glossary />}
+    </div>
   );
 }
 
 // Full strip overview
 function FullStripView() {
   return (
-    <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white/40">
-      <img
-        src={comicStrip}
-        alt="Full comic strip: Undersea Tales by Jim Toomey"
-        className="w-full h-auto"
-        style={{ display: 'block' }}
-      />
+    <div className="flex flex-col gap-4">
+      <div className="rounded-2xl overflow-hidden shadow-2xl border-4 border-white/40">
+        <img
+          src={comicStrip}
+          alt="Full comic strip: Undersea Tales by Jim Toomey"
+          className="w-full h-auto"
+          style={{ display: 'block' }}
+        />
+      </div>
+      <Glossary />
     </div>
   );
 }

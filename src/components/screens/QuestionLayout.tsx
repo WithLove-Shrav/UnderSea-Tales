@@ -11,6 +11,7 @@ import EmotionShellGame from '../games/EmotionShellGame';
 import TreasureDecoder from '../games/TreasureDecoder';
 import OceanMoodCompass from '../games/OceanMoodCompass';
 import comicStrip from '../../assets/comic-strip.png';
+import Glossary from '../ui/Glossary';
 
 // ─── Comic Zoom Modal ────────────────────────────────────────────────────────
 function ComicZoomModal({ onClose }: { onClose: () => void }) {
@@ -53,6 +54,7 @@ function ComicZoomModal({ onClose }: { onClose: () => void }) {
         <p className="text-center text-white/70 text-xs mt-2" style={{ fontFamily: 'Nunito, sans-serif' }}>
           Click outside or ✕ to close
         </p>
+        <Glossary />
       </motion.div>
     </motion.div>
   );
@@ -96,6 +98,8 @@ function ComicSidebar({ onZoom }: { onZoom: () => void }) {
           </motion.div>
         </motion.div>
       </motion.button>
+
+      <Glossary />
 
       <div className="flex justify-center mt-2">
         <div className="flex items-center gap-2 text-xs font-bold text-slate-800 bg-white/90 px-4 py-1.5 rounded-full shadow-sm" style={{ fontFamily: 'Nunito, sans-serif' }}>
