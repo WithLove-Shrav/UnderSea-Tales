@@ -349,12 +349,14 @@ export default function QuestionLayout() {
             </motion.div>
           </AnimatePresence>
 
-            {/* Feedback bar */}
-            <AnimatePresence mode="wait">
-              {feedbackMsg && (
-                <FeedbackBar key={feedbackMsg} message={feedbackMsg} type={feedbackType} />
-              )}
-            </AnimatePresence>
+            {/* Feedback bar with guaranteed physical spacing */}
+            <div className="pt-8 md:pt-12 w-full">
+              <AnimatePresence mode="wait">
+                {feedbackMsg && (
+                  <FeedbackBar key={feedbackMsg} message={feedbackMsg} type={feedbackType} />
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           {/* Pearl title card */}

@@ -80,7 +80,7 @@ export default function SpeechBubbleChoice({ options, questionText, onAnswer, an
         {options.map((option, i) => (
           <motion.button
             key={option.id}
-            className="w-full text-left rounded-2xl px-6 py-5 font-semibold text-sm md:text-base cursor-pointer relative overflow-visible focus:outline-none focus:ring-2 focus:ring-sky-400"
+            className="w-full text-left rounded-3xl px-6 py-5 font-semibold text-sm md:text-base cursor-pointer relative overflow-visible focus:outline-none focus:ring-2 focus:ring-sky-400"
             style={{
               fontFamily: 'Nunito, sans-serif',
               background: answered && option.isCorrect
@@ -112,36 +112,23 @@ export default function SpeechBubbleChoice({ options, questionText, onAnswer, an
             aria-label={`Option ${option.id}: ${option.text}`}
             aria-pressed={selectedId === option.id}
           >
-            {/* Speech Bubble Tail */}
-            <div 
-              className="absolute top-1/2 -translate-y-1/2 w-6 h-6 transform rotate-45"
-              style={{
-                left: '-11px',
-                background: answered && option.isCorrect
-                  ? '#dcfce7'
-                  : answered && selectedId === option.id && !option.isCorrect
-                  ? '#fee2e2'
-                  : 'white',
-                borderLeft: answered && option.isCorrect
-                  ? '1px solid #86efac'
-                  : answered && selectedId === option.id
-                  ? '1px solid #fca5a5'
-                  : hoveredId === option.id
-                  ? '1px solid #0284c7'
-                  : '1px solid #e2e8f0',
-                borderBottom: answered && option.isCorrect
-                  ? '1px solid #86efac'
-                  : answered && selectedId === option.id
-                  ? '1px solid #fca5a5'
-                  : hoveredId === option.id
-                  ? '1px solid #0284c7'
-                  : '1px solid #e2e8f0',
-                borderTop: 'none',
-                borderRight: 'none',
-                zIndex: -1,
-                borderRadius: '0 0 0 4px',
-              }}
-            />
+            {/* Thought Bubble Trail */}
+            <div className="absolute top-1/2 -left-6 md:-left-8 -translate-y-1/2 flex gap-1.5 md:gap-2 items-center z-[-1]">
+              <div 
+                className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full"
+                style={{
+                  background: answered && option.isCorrect ? '#dcfce7' : answered && selectedId === option.id && !option.isCorrect ? '#fee2e2' : 'white',
+                  border: '1px solid ' + (answered && option.isCorrect ? '#86efac' : answered && selectedId === option.id ? '#fca5a5' : hoveredId === option.id ? '#0284c7' : '#e2e8f0')
+                }}
+              />
+              <div 
+                className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 rounded-full"
+                style={{
+                  background: answered && option.isCorrect ? '#dcfce7' : answered && selectedId === option.id && !option.isCorrect ? '#fee2e2' : 'white',
+                  border: '1px solid ' + (answered && option.isCorrect ? '#86efac' : answered && selectedId === option.id ? '#fca5a5' : hoveredId === option.id ? '#0284c7' : '#e2e8f0')
+                }}
+              />
+            </div>
             <div className="flex items-center gap-3 relative z-10">
               {/* Bubble indicator */}
               <motion.div

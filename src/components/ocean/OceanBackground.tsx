@@ -101,11 +101,15 @@ export default function OceanBackground({ children }: { children?: React.ReactNo
   ];
 
   const creatures = [
-    { emoji: '🐟', top: '20%', delay: 0, duration: 45, direction: 1 as const, scale: 0.8 },
-    { emoji: '🐠', top: '45%', delay: 15, duration: 55, direction: -1 as const, scale: 0.9 },
+    { emoji: '🐟', top: '15%', delay: 0, duration: 45, direction: 1 as const, scale: 0.8 },
+    { emoji: '🐠', top: '40%', delay: 15, duration: 55, direction: -1 as const, scale: 0.9 },
     { emoji: '🐢', top: '75%', delay: 5, duration: 80, direction: 1 as const, scale: 1.2 },
     { emoji: '🦑', top: '60%', delay: 25, duration: 60, direction: -1 as const, scale: 0.7 },
-    { emoji: '🐡', top: '35%', delay: 35, duration: 50, direction: 1 as const, scale: 0.85 },
+    { emoji: '🐡', top: '30%', delay: 35, duration: 50, direction: 1 as const, scale: 0.85 },
+    { emoji: '🐳', top: '80%', delay: 45, duration: 90, direction: -1 as const, scale: 1.5 },
+    { emoji: '🦀', top: '90%', delay: 10, duration: 70, direction: 1 as const, scale: 0.6 },
+    { emoji: '🐙', top: '50%', delay: 50, duration: 65, direction: 1 as const, scale: 0.9 },
+    { emoji: '🐬', top: '25%', delay: 20, duration: 40, direction: -1 as const, scale: 1.1 },
   ];
 
   return (
