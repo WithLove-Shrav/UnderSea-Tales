@@ -32,85 +32,81 @@ export default function ReactionCards({ options, questionText, contextText, onAn
         </p>
       </motion.div>
 
-      {/* Wife reaction cards */}
-      <div className="grid grid-cols-2 gap-3">
+      {/* Wife reaction list */}
+      <div className="flex flex-col gap-4 max-w-2xl mx-auto w-full">
         {options.map((option, i) => (
           <motion.button
             key={option.id}
-            className="rounded-2xl p-5 md:p-6 text-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-400 relative overflow-hidden bg-white shadow-sm flex flex-col items-center justify-center"
+            className="w-full text-left cursor-pointer focus:outline-none flex items-center gap-6 p-3 rounded-2xl transition-colors relative"
             style={{
-              fontFamily: 'Nunito, sans-serif',
               background: answered && option.isCorrect
-                ? '#dcfce7'
+                ? 'rgba(134, 239, 172, 0.2)'
                 : answered && selectedId === option.id && !option.isCorrect
-                ? '#fee2e2'
-                : 'white',
-              border: answered && option.isCorrect
-                ? '1px solid #86efac'
-                : answered && selectedId === option.id
-                ? '1px solid #fca5a5'
+                ? 'rgba(248, 113, 113, 0.15)'
                 : hoveredId === option.id
-                ? '1px solid #10b981'
-                : '1px solid #e2e8f0',
+                ? 'rgba(241, 245, 249, 0.8)'
+                : 'transparent',
             }}
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: answered && !option.isCorrect && selectedId !== option.id ? 0.4 : 1, y: 0, scale: 1 }}
-            transition={{ delay: i * 0.05, duration: 0.3 }}
-            whileHover={!answered ? { backgroundColor: '#f8fafc' } : {}}
-            whileTap={!answered ? { scale: 0.98 } : {}}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: answered && !option.isCorrect && selectedId !== option.id ? 0.3 : 1, x: 0 }}
+            transition={{ delay: i * 0.08, duration: 0.3 }}
             onClick={() => !answered && onAnswer(option.isCorrect, option.id)}
             onHoverStart={() => setHoveredId(option.id)}
             onHoverEnd={() => setHoveredId(null)}
             disabled={answered}
-            aria-label={`Option ${option.id}: ${option.emoji} ${option.feeling} — ${option.text}`}
+            aria-label={`Option ${option.id}: ${option.feeling} — ${option.text}`}
             aria-pressed={selectedId === option.id}
           >
-            {/* Reaction Image or Emoji */}
-            {option.image ? (
-              <motion.img
-                src={option.image}
-                alt={option.feeling}
-                className="w-28 h-28 object-contain mb-3"
-                animate={answered && option.isCorrect ? { scale: [1, 1.15, 1], rotate: [0, 5, -5, 0] } : {}}
-                transition={{ duration: 0.5 }}
-              />
-            ) : (
-              <motion.div
-                className="text-4xl mb-1"
-                animate={answered && option.isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : {}}
-                transition={{ duration: 0.5 }}
-                aria-hidden="true"
-              >
-                {option.emoji}
-              </motion.div>
-            )}
-            <div
-              className="text-xs font-bold mb-1"
-              style={{ color: '#1e3a5f', fontFamily: 'Fredoka One, cursive' }}
-            >
-              {option.feeling}
-            </div>
-            <div
-              className="text-xs leading-tight"
-              style={{ color: '#475569', fontFamily: 'Nunito, sans-serif' }}
-            >
-              {option.text}
+            {/* Reaction Image */}
+            <div className="flex-shrink-0 flex items-center justify-center w-24 h-24 bg-white/50 rounded-full shadow-sm">
+              {option.image ? (
+                <motion.img
+                  src={option.image}
+                  alt={option.feeling}
+                  className="w-20 h-20 object-contain"
+                  animate={answered && option.isCorrect ? { scale: [1, 1.2, 1], rotate: [0, 8, -8, 0] } : hoveredId === option.id && !answered ? { scale: 1.1 } : {}}
+                  transition={{ duration: 0.4 }}
+                />
+              ) : (
+                <motion.div
+                  className="text-4xl"
+                  animate={answered && option.isCorrect ? { scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] } : hoveredId === option.id && !answered ? { scale: 1.1 } : {}}
+                  transition={{ duration: 0.4 }}
+                  aria-hidden="true"
+                >
+                  {option.emoji}
+                </motion.div>
+              )}
             </div>
 
-            {/* Selection indicator */}
-            {answered && option.isCorrect && (
-              <motion.div
-                className="absolute top-2 right-2 text-lg"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring' }}
+            {/* Text Content */}
+            <div className="flex-1 flex flex-col justify-center">
+              <div
+                className="text-lg font-bold mb-1 flex items-center gap-2"
+                style={{ color: '#1e3a5f', fontFamily: 'Fredoka One, cursive' }}
               >
-                ✅
-              </motion.div>
-            )}
-            {answered && selectedId === option.id && !option.isCorrect && (
-              <div className="absolute top-2 right-2 text-lg">❌</div>
-            )}
+                {option.feeling}
+                {answered && option.isCorrect && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: 'spring' }}
+                    className="text-emerald-500 text-xl"
+                  >
+                    ✅
+                  </motion.span>
+                )}
+                {answered && selectedId === option.id && !option.isCorrect && (
+                  <span className="text-red-500 text-xl">❌</span>
+                )}
+              </div>
+              <div
+                className="text-base md:text-lg text-slate-600 font-semibold leading-snug"
+                style={{ fontFamily: 'Nunito, sans-serif' }}
+              >
+                {option.text}
+              </div>
+            </div>
           </motion.button>
         ))}
       </div>
