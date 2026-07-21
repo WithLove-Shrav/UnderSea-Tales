@@ -53,7 +53,7 @@ export default function SpeechBubbleChoice({ options, questionText, onAnswer, an
         <img
           src={crabImg}
           alt="Crab character"
-          className="w-16 h-16 md:w-20 md:h-20 object-contain select-none flex-shrink-0"
+          className="w-24 h-24 md:w-28 md:h-28 object-contain select-none flex-shrink-0"
           aria-hidden="true"
         />
         <div className="flex-1">
@@ -77,12 +77,12 @@ export default function SpeechBubbleChoice({ options, questionText, onAnswer, an
             ) : (
               <motion.div
                 key="empty"
-                className="border-2 border-dashed border-slate-300 rounded-2xl px-6 py-5 text-center"
+                className="border-2 border-dashed border-slate-300 rounded-2xl px-6 py-5"
                 style={{ background: 'rgba(248,250,252,0.6)', minHeight: 60 }}
                 animate={{ opacity: [0.7, 1, 0.7] }}
                 transition={{ duration: 3, repeat: Infinity }}
               >
-                <p className="text-sm font-medium text-slate-500" style={{ fontFamily: 'Nunito, sans-serif' }}>
+                <p className="text-sm font-medium text-slate-500 text-center" style={{ fontFamily: 'Nunito, sans-serif' }}>
                   💬 Tap an option below to fill in what the crab says
                 </p>
               </motion.div>

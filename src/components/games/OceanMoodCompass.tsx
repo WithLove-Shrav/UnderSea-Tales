@@ -39,11 +39,11 @@ export default function OceanMoodCompass({
       </motion.div>
 
       {/* Grid of Options */}
-      <div className="grid grid-cols-2 gap-4 md:gap-6 w-full max-w-2xl">
+      <div className="grid grid-cols-2 gap-5 md:gap-7 w-full max-w-2xl">
         {options.map((option, i) => (
           <motion.button
             key={option.id}
-            className="flex flex-col items-center justify-center p-6 md:p-8 rounded-3xl bg-white/95 shadow-lg border-2 cursor-pointer relative overflow-hidden"
+            className="flex flex-col items-center justify-center p-8 md:p-10 rounded-3xl bg-white/95 shadow-lg border-2 cursor-pointer relative overflow-hidden"
             style={{
               fontFamily: 'Nunito, sans-serif',
               borderColor: answered && option.isCorrect
@@ -91,8 +91,8 @@ export default function OceanMoodCompass({
               )}
             </AnimatePresence>
 
-            <span className="text-4xl md:text-5xl mb-4 drop-shadow-sm">{option.emoji || '✨'}</span>
-            <span className="text-sm md:text-base font-bold text-slate-700 text-center leading-tight">
+            <span className="text-5xl md:text-6xl mb-4 drop-shadow-sm">{option.emoji || '✨'}</span>
+            <span className="text-sm md:text-lg font-bold text-slate-700 text-center leading-tight">
               {option.text}
             </span>
           </motion.button>

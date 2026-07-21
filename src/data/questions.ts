@@ -44,10 +44,10 @@ export const questions: Question[] = [
     explanation: "Because the crab wants to be angry, it will try again to make the shark tell a story that makes it crabby.",
     turtleTip: "Look at what the crab wanted at the very beginning of the comic!",
     options: [
-      { id: 'A', text: '"Try something else. I still need to feel crabby!"', isCorrect: true, feeling: 'determined' },
-      { id: 'B', text: '"Maybe I don\'t need to feel crabby after all."', isCorrect: false, feeling: 'calm' },
-      { id: 'C', text: '"Now I\'ll try to make YOU feel crabby!"', isCorrect: false, feeling: 'mischievous' },
-      { id: 'D', text: '"Is your wife still angry?"', isCorrect: false, feeling: 'curious' },
+      { id: 'A', text: "'Try something else. I still need to feel crabby!'", isCorrect: true, feeling: 'determined' },
+      { id: 'B', text: "'Maybe I don't need to feel crabby after all.'", isCorrect: false, feeling: 'calm' },
+      { id: 'C', text: "'Now I'll try to make YOU feel crabby!'", isCorrect: false, feeling: 'mischievous' },
+      { id: 'D', text: "'Is your wife still angry?'", isCorrect: false, feeling: 'curious' },
     ],
   },
   {
@@ -64,10 +64,10 @@ export const questions: Question[] = [
     explanation: "Since it is a golf putter, it is not a present for her. So, she would be neutral instead of angry or excited.",
     turtleTip: "If she knew it was his putter all along, she wouldn't expect a present!",
     options: [
-      { id: 'A', image: neutralImg, text: '"Oh... it\'s your new putter."', feeling: 'Neutral', isCorrect: true },
-      { id: 'B', image: excitedImg, text: '"Wow! A birthday present for me!"', feeling: 'Excited', isCorrect: false },
-      { id: 'C', image: angryImg, text: '"You forgot my birthday!"', feeling: 'Angry', isCorrect: false },
-      { id: 'D', image: upsetImg, text: '"You hid something from me!"', feeling: 'Upset', isCorrect: false },
+      { id: 'A', image: neutralImg, text: "'Oh... it's your new putter.'", feeling: 'Neutral', isCorrect: true },
+      { id: 'B', image: excitedImg, text: "'Wow! A birthday present for me!'", feeling: 'Excited', isCorrect: false },
+      { id: 'C', image: angryImg, text: "'You forgot my birthday!'", feeling: 'Angry', isCorrect: false },
+      { id: 'D', image: upsetImg, text: "'You hid something from me!'", feeling: 'Upset', isCorrect: false },
     ],
   },
   {
