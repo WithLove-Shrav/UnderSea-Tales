@@ -15,7 +15,7 @@ export default function ReactionCards({ options, questionText, contextText, onAn
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-10 w-full">
       {/* Context + Question */}
       <motion.div
         className="bg-white/95 rounded-2xl p-6 md:p-8 shadow-sm border border-slate-200"
@@ -33,7 +33,7 @@ export default function ReactionCards({ options, questionText, contextText, onAn
       </motion.div>
 
       {/* Wife reaction list */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto w-full mt-4 md:mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto w-full mt-4 md:mt-8">
         {options.map((option, i) => (
           <motion.button
             key={option.id}
