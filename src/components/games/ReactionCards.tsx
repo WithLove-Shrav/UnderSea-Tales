@@ -27,7 +27,7 @@ export default function ReactionCards({ options, questionText, contextText, onAn
             📦 {contextText}
           </p>
         )}
-        <p className="text-base md:text-lg font-bold leading-relaxed text-center" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
+        <p className="text-xl md:text-2xl font-bold leading-relaxed text-center" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
           {questionText}
         </p>
       </motion.div>

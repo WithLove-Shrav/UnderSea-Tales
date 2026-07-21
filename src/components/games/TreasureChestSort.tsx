@@ -124,7 +124,7 @@ export default function TreasureChestSort({ options, questionText, contextText, 
             </p>
           </div>
         )}
-        <p className="text-sm font-bold leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
+        <p className="text-xl md:text-2xl font-bold leading-relaxed" style={{ fontFamily: 'Nunito, sans-serif', color: '#1e3a5f' }}>
           {questionText}
         </p>
       </motion.div>
