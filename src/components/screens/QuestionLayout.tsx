@@ -277,15 +277,17 @@ export default function QuestionLayout() {
           </details>
 
 
-          {/* Game component */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`q-${currentQ}-${questionKey}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4 }}
-            >
+          {/* Game component & Feedback wrapper */}
+          <div className="flex-1 flex flex-col justify-center w-full max-w-5xl mx-auto py-4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`q-${currentQ}-${questionKey}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}
+                className="w-full"
+              >
               {question.gameType === 'speech-bubble' && (
                 <SpeechBubbleChoice
                   options={question.options}
@@ -346,16 +348,17 @@ export default function QuestionLayout() {
             </motion.div>
           </AnimatePresence>
 
-          {/* Feedback bar (Moved below options) */}
-          <AnimatePresence mode="wait">
-            {feedbackMsg && (
-              <FeedbackBar key={feedbackMsg} message={feedbackMsg} type={feedbackType} />
-            )}
-          </AnimatePresence>
+            {/* Feedback bar */}
+            <AnimatePresence mode="wait">
+              {feedbackMsg && (
+                <FeedbackBar key={feedbackMsg} message={feedbackMsg} type={feedbackType} />
+              )}
+            </AnimatePresence>
+          </div>
 
           {/* Pearl title card */}
           <motion.div
-            className="rounded-2xl px-6 py-5 flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-white shadow-sm mt-4"
+            className="rounded-2xl px-6 py-5 flex items-center gap-4 bg-white/70 backdrop-blur-sm border border-white shadow-sm mt-auto shrink-0"
             key={`pearl-${currentQ}`}
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
