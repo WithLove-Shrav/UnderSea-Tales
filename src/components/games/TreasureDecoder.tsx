@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { QuestionOption } from '../../data/questions';
 import crabImg from '../../assets/crab.png';
+import BubblePop from './BubblePop';
 
 interface TreasureDecoderProps {
   options: QuestionOption[];
@@ -13,61 +14,6 @@ interface TreasureDecoderProps {
   attempts?: number;
 }
 
-// Particle ring that expands outward on pop
-function PopRing({ color }: { color: string }) {
-  return (
-    <motion.div
-      className="absolute inset-0 rounded-full pointer-events-none"
-      style={{ border: `3px solid ${color}`, zIndex: 30 }}
-      initial={{ scale: 1, opacity: 0.9 }}
-      animate={{ scale: 2.2, opacity: 0 }}
-      transition={{ duration: 0.55, ease: [0.2, 0, 0.6, 1] }}
-    />
-  );
-}
-
-// Bubble pop overlay on the button
-function BubblePopEffect({ color }: { color: string }) {
-  const particles = Array.from({ length: 8 }, (_, i) => ({
-    angle: (i / 8) * 360,
-    dist: 30 + Math.random() * 20,
-  }));
-  return (
-    <>
-      {/* Expanding flash */}
-      <motion.div
-        className="absolute inset-0 rounded-full pointer-events-none"
-        style={{ background: color, zIndex: 29 }}
-        initial={{ scale: 0.8, opacity: 0.6 }}
-        animate={{ scale: 1.6, opacity: 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-      />
-      {/* Outer ring */}
-      <PopRing color={color} />
-      {/* Mini droplet particles */}
-      {particles.map((p, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            width: 6, height: 6,
-            background: color,
-            top: '50%', left: '50%',
-            zIndex: 30,
-          }}
-          initial={{ x: -3, y: -3, scale: 1, opacity: 0.9 }}
-          animate={{
-            x: Math.cos((p.angle * Math.PI) / 180) * p.dist - 3,
-            y: Math.sin((p.angle * Math.PI) / 180) * p.dist - 3,
-            scale: 0,
-            opacity: 0,
-          }}
-          transition={{ duration: 0.5, ease: 'easeOut', delay: 0.05 }}
-        />
-      ))}
-    </>
-  );
-}
 
 export default function TreasureDecoder({
   options,
@@ -89,7 +35,7 @@ export default function TreasureDecoder({
       setTimeout(() => {
         setPoppingId(null);
         onAnswer(option.isCorrect, option.id);
-      }, 550);
+      }, 420);
     } else {
       onAnswer(option.isCorrect, option.id);
     }
@@ -165,7 +111,6 @@ export default function TreasureDecoder({
           const isPopping = poppingId === option.id;
           const isCorrect = option.isCorrect;
           const isWrongSelected = answered && selectedId === option.id && !isCorrect;
-          const popColor = isCorrect ? 'rgba(74,222,128,0.7)' : 'rgba(248,113,113,0.7)';
 
           return (
             <motion.button
@@ -196,15 +141,17 @@ export default function TreasureDecoder({
                   ? '0 4px 20px rgba(248,113,113,0.3), inset 0 1px 0 rgba(255,255,255,0.4)'
                   : '0 4px 16px rgba(14,165,233,0.15), inset 0 1px 0 rgba(255,255,255,0.7)',
               }}
-              initial={{ opacity: 0, y: 12, scale: 0.97 }}
               animate={{
-                opacity: answered && !isCorrect && selectedId !== option.id ? 0.35 : 1,
+                opacity: isPopping ? [1, 0] : (answered && !isCorrect && selectedId !== option.id ? 0.35 : 1),
                 y: 0,
-                scale: isPopping ? [1, 1.08, 0] : 1,
+                scale: isPopping ? [1, 1.12, 0.0] : 1,
               }}
               transition={
                 isPopping
-                  ? { scale: { duration: 0.5, ease: [0.4, 0, 0.2, 1] } }
+                  ? {
+                      scale:   { duration: 0.20, times: [0, 0.15, 1], ease: [0.6, 0, 1, 1] },
+                      opacity: { duration: 0.12, delay: 0.08 },
+                    }
                   : { delay: i * 0.06, duration: 0.35, type: 'spring', stiffness: 260, damping: 22 }
               }
               whileHover={!answered && !poppingId ? { scale: 1.015, y: -1 } : {}}
@@ -222,7 +169,7 @@ export default function TreasureDecoder({
 
               {/* Pop effect */}
               <AnimatePresence>
-                {isPopping && <BubblePopEffect key="pop" color={popColor} />}
+                {isPopping && <BubblePop key="pop" variant={isCorrect ? 'correct' : 'wrong'} />}
               </AnimatePresence>
 
               <div className="flex items-center gap-3 relative z-10">
