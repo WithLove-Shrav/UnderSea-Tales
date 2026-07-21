@@ -2,7 +2,6 @@ import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { QuestionOption } from '../../data/questions';
 import crabImg from '../../assets/crab.png';
-import BubblePop from './BubblePop';
 
 interface TreasureDecoderProps {
   options: QuestionOption[];
@@ -19,23 +18,13 @@ export default function TreasureDecoder({
   questionText,
   onAnswer,
   answered,
-  selectedId,
-  attempts = 0,
+  selectedId
 }: TreasureDecoderProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
-  const [poppedId, setPoppedId] = useState<string | null>(null);
-
   const handleSelect = useCallback((option: QuestionOption) => {
-    if (answered || poppedId) return;
-
-    const isFinal = option.isCorrect || attempts >= 1;
-    if (isFinal) {
-      setPoppedId(option.id);
-      setTimeout(() => onAnswer(option.isCorrect, option.id), 80);
-    } else {
-      onAnswer(option.isCorrect, option.id);
-    }
-  }, [answered, poppedId, attempts, onAnswer]);
+    if (answered) return;
+    onAnswer(option.isCorrect, option.id);
+  }, [answered, onAnswer]);
 
   return (
     <div className="flex flex-col gap-5 w-full items-center">
@@ -102,17 +91,15 @@ export default function TreasureDecoder({
       {/* Options — ocean bubble style */}
       <div className="grid grid-cols-1 gap-3 w-full">
         {options.map((option, i) => {
-          const isPopped        = poppedId === option.id;
           const isCorrect       = option.isCorrect;
           const isWrongSelected = answered && selectedId === option.id && !isCorrect;
 
           return (
-            <div key={option.id} className="relative">
-              <motion.button
-                className="w-full text-left rounded-full px-7 py-4 font-semibold text-sm md:text-base cursor-pointer relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1"
-                style={{
-                  fontFamily: 'Nunito, sans-serif',
-                  visibility: isPopped ? 'hidden' : 'visible',
+            <motion.button
+              key={option.id}
+              className="w-full text-left rounded-full px-7 py-4 font-semibold text-sm md:text-base cursor-pointer relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-1"
+              style={{
+                fontFamily: 'Nunito, sans-serif',
                   background: answered && isCorrect
                     ? 'linear-gradient(135deg, rgba(134,239,172,0.9), rgba(74,222,128,0.7))'
                     : isWrongSelected
@@ -143,12 +130,12 @@ export default function TreasureDecoder({
                   scale: 1,
                 }}
                 transition={{ delay: i * 0.06, duration: 0.35, type: 'spring', stiffness: 260, damping: 22 }}
-                whileHover={!answered && !poppedId ? { scale: 1.015, y: -1 } : {}}
-                whileTap={!answered && !poppedId ? { scale: 0.98 } : {}}
-                onClick={() => handleSelect(option)}
-                onMouseEnter={() => !answered && !poppedId && setHoveredId(option.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                disabled={answered || !!poppedId}
+              whileHover={!answered ? { scale: 1.015, y: -1 } : {}}
+              whileTap={!answered ? { scale: 0.98 } : {}}
+              onClick={() => handleSelect(option)}
+              onMouseEnter={() => !answered && setHoveredId(option.id)}
+              onMouseLeave={() => setHoveredId(null)}
+              disabled={answered}
                 aria-label={`Option ${option.id}: ${option.text}`}
                 aria-pressed={selectedId === option.id}
               >
@@ -173,14 +160,7 @@ export default function TreasureDecoder({
                   </div>
                   <span className="leading-snug">{option.text}</span>
                 </div>
-              </motion.button>
-
-              <AnimatePresence>
-                {isPopped && (
-                  <BubblePop key="pop" variant={isCorrect ? 'correct' : 'wrong'} />
-                )}
-              </AnimatePresence>
-            </div>
+            </motion.button>
           );
         })}
       </div>
